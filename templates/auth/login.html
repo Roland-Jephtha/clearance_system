@@ -1,0 +1,113 @@
+
+{% extends 'auth/base.html' %}
+
+{% load static  %}
+
+{% block content %}
+
+  <body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    <div class="container-fluid p-0">
+      <div class="row m-0">
+        <div class="col-12 p-0">    
+          <div class="login-card login-dark">
+            <div>
+              <div class="login-main"> 
+                <form class="theme-form" method="post">
+
+                  {% csrf_token %}
+                  <h2 class="text-center">Sign in to account</h2>
+                  <p class="text-center">Enter your email &amp; password to login</p>
+                  <div class="form-group">
+                    <label class="col-form-label">Email Address</label>
+                    <input class="form-control" type="email" required="" name = "email" placeholder="Test@gmail.com">
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Password</label>
+                    <div class="form-input position-relative">
+                      <input class="form-control" type="password" name="password" id="password-field" required="" placeholder="*********">
+                      <div class="show-hide">
+                        <svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                          <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                      </div>                    </div>
+                  </div>
+                  <div class="form-group mb-0 checkbox-checked">
+                    <div class="form-check checkbox-solid-info">
+                      <!-- <input class="form-check-input" id="solid6" type="checkbox">
+                      <label class="form-check-label" for="solid6">Remember password</label> -->
+                    </div>
+                    <div class="text-end mt-3">
+                      <button class="btn btn-primary btn-block w-100" type="submit">Sign in                 </button>
+                    </div>
+                  </div>
+          
+         
+                  <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2" href="sign-up.html">Create Account</a></p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+
+
+      <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password-field');
+        const showHideContainer = document.querySelector('.show-hide');
+        
+        // SVG for eye icon (visible password)
+        const eyeSvg = `<svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>`;
+        
+        // SVG for eye-slash icon (hidden password)
+        const eyeSlashSvg = `<svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+          <line x1="1" y1="1" x2="23" y2="23"></line>
+        </svg>`;
+        
+        showHideContainer.addEventListener('click', function() {
+          // Toggle password visibility
+          const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordField.setAttribute('type', type);
+          
+          // Toggle icon
+          showHideContainer.innerHTML = type === 'text' ? eyeSvg : eyeSlashSvg;
+        });
+      });
+      
+      
+      </script>
+
+
+
+
+      <script src="{% static 'assets/js/password.js' %}"></script>
+
+
+      {% endblock %}

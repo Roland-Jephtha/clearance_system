@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-body">
+  <div class="container-fluid">
+    <div class="page-title">
+      <div class="row">
+        <div class="col-sm-6 col-12"> 
+          <h2>Edit Profile</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="edit-profile">
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="card-header card-no-border pb-0">
+              <h3 class="card-title mb-0">My Profile</h3>
+            </div>
+            <div class="card-body">
+              <div class="profile-title">
+                <div class="d-flex gap-3">
+                  {% if profile.image %}
+                    <img class="img-70 rounded-circle" alt="profile image" src="{{ profile.image.url }}"/>
+                  {% endif %}
+                  <div class="flex-grow-1">
+                    <h3 class="mb-1">{{ profile.user.username|title }}</h3>
+                    <p>{{ profile.user.position|title }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-8">
+          <form method="POST" enctype="multipart/form-data" class="card">
+            {% csrf_token %}
+            <div class="card-header card-no-border pb-0">
+              <h3 class="card-title mb-0">Edit Profile</h3>
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+                {% for field in form %}
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                      <div class="text-danger">{{ field.errors }}</div>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="card-footer text-end">
+              <button class="btn btn-primary" type="submit">Update Profile</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

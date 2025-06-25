@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="page-body">
+  <div class="container-fluid">
+    <div class="page-title">
+      <div class="row">
+        <div class="col-sm-6 col-12">
+          <h2>Student Clearance Dashboard</h2>
+          <p class="mb-0 text-title-gray">Monitor and complete your clearance steps below.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid dashboard-3">
+    <div class="row">
+      {% if user.position == "student" %}
+        <!-- HOD -->
+        <div class="col-xxl-4 col-xl-4 col-md-6">
+          <div class="card graphic-design overflow-hidden">
+            <div class="card-header card-no-border pb-0">
+              <div class="header-top">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="flex-shrink-0">
+                    <div class="icon">
+                      <img class="img-fluid rounded-circle" src="{% static 'images/hod.jpg' %}" alt="HOD" width="50">
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5>Head of Department</h5>
+                    <p class="mb-0 text-muted">Dr. Alice Johnson</p>
+                  </div>
+                </div>
+                <span class="badge bg-warning">Pending</span>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <p>Complete your department clearance here.</p>
+              <a href="#" class="btn btn-outline-primary btn-sm">View Clearance</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUG -->
+        <div class="col-xxl-4 col-xl-4 col-md-6">
+          <div class="card graphic-design overflow-hidden">
+            <div class="card-header card-no-border pb-0">
+              <div class="header-top">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="flex-shrink-0">
+                    <div class="icon">
+                      <img class="img-fluid rounded-circle" src="{% static 'images/sug.jpg' %}" alt="SUG" width="50">
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5>SUG President</h5>
+                    <p class="mb-0 text-muted">Michael Okon</p>
+                  </div>
+                </div>
+                <span class="badge bg-success">Approved</span>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <p>Get your SUG clearance signed off.</p>
+              <a href="#" class="btn btn-outline-primary btn-sm">View Clearance</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Library -->
+        <div class="col-xxl-4 col-xl-4 col-md-6">
+          <div class="card graphic-design overflow-hidden">
+            <div class="card-header card-no-border pb-0">
+              <div class="header-top">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="flex-shrink-0">
+                    <div class="icon">
+                      <img class="img-fluid rounded-circle" src="{% static 'images/library.jpg' %}" alt="Library" width="50">
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5>Library Officer</h5>
+                    <p class="mb-0 text-muted">Mrs. Grace Edet</p>
+                  </div>
+                </div>
+                <span class="badge bg-danger">Rejected</span>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <p>Ensure all borrowed books are returned.</p>
+              <a href="#" class="btn btn-outline-primary btn-sm">View Clearance</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sport Director -->
+        <div class="col-xxl-4 col-xl-4 col-md-6">
+          <div class="card graphic-design overflow-hidden">
+            <div class="card-header card-no-border pb-0">
+              <div class="header-top">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="flex-shrink-0">
+                    <div class="icon">
+                      <img class="img-fluid rounded-circle" src="{% static 'images/sport.jpg' %}" alt="Sport Director" width="50">
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5>Sport Director</h5>
+                    <p class="mb-0 text-muted">Samuel Nwosu</p>
+                  </div>
+                </div>
+                <span class="badge bg-warning">Pending</span>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <p>Confirm all sport dues and requirements.</p>
+              <a href="#" class="btn btn-outline-primary btn-sm">View Clearance</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Affairs -->
+        <div class="col-xxl-4 col-xl-4 col-md-6">
+          <div class="card graphic-design overflow-hidden">
+            <div class="card-header card-no-border pb-0">
+              <div class="header-top">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="flex-shrink-0">
+                    <div class="icon">
+                      <img class="img-fluid rounded-circle" src="{% static 'images/student_affairs.jpg' %}" alt="Student Affairs" width="50">
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5>Student Affairs</h5>
+                    <p class="mb-0 text-muted">Blessing Chika</p>
+                  </div>
+                </div>
+                <span class="badge bg-success">Approved</span>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <p>Meet with student affairs for final clearance.</p>
+              <a href="#" class="btn btn-outline-primary btn-sm">View Clearance</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exam & Records -->
+        <div class="col-xxl-4 col-xl-4 col-md-6">
+          <div class="card graphic-design overflow-hidden">
+            <div class="card-header card-no-border pb-0">
+              <div class="header-top">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="flex-shrink-0">
+                    <div class="icon">
+                      <img class="img-fluid rounded-circle" src="{% static 'images/exam.jpg' %}" alt="Exam & Records" width="50">
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5>Exam & Records</h5>
+                    <p class="mb-0 text-muted">Mrs. Rita Akpan</p>
+                  </div>
+                </div>
+                <span class="badge bg-warning">Pending</span>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <p>Ensure all results and records are cleared.</p>
+              <a href="#" class="btn btn-outline-primary btn-sm">View Clearance</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hostel -->
+        <div class="col-xxl-4 col-xl-4 col-md-6">
+          <div class="card graphic-design overflow-hidden">
+            <div class="card-header card-no-border pb-0">
+              <div class="header-top">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="flex-shrink-0">
+                    <div class="icon">
+                      <img class="img-fluid rounded-circle" src="{% static 'images/hostel.jpg' %}" alt="Hostel" width="50">
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5>Hostel Officer</h5>
+                    <p class="mb-0 text-muted">Emmanuel Bassey</p>
+                  </div>
+                </div>
+                <span class="badge bg-danger">Rejected</span>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <p>Clear all hostel obligations.</p>
+              <a href="#" class="btn btn-outline-primary btn-sm">View Clearance</a>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <!-- Staff Dashboard -->
+        <div class="col-12">
+          <div class="card bg-light border-0 shadow-lg">
+            <div class="card-body p-5 text-center">
+              <img src="{% static 'images/staff_dashboard.png' %}" alt="Staff Dashboard" class="mb-4" style="width: 80px;">
+              <h3 class="card-title mb-2">Welcome, {{ user.username }}</h3>
+              <p class="text-muted mb-4">Access and manage student clearance processes with ease.</p>
+              <a href="{% url 'student_doc' %}" class="btn btn-success btn-lg px-4">Review Student Documents</a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

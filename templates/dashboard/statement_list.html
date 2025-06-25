@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid mt-5">
+  <h2>Generated Statement of Results</h2>
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Student</th>
+            <th>Date Created</th>
+            <th>Issued By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in statements %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ item.student.username }}</td>
+            <td>{{ item.created|date:"F d, Y" }}</td>
+            <td>{{ item.issued_by.username }}</td>
+            <td>
+              <a href="{% url 'statement_detail' item.pk %}" class="btn btn-primary btn-sm">View</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5">No Statement of Result issued yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,176 @@
+
+
+
+
+{% extends 'base.html' %}
+
+
+
+
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+
+        <div class="page-body">
+          <div class="container-fluid">
+            <div class="page-title">
+              <div class="row">
+                <div class="col-sm-6 col-12"> 
+                  <h2>My Documents</h2>
+                </div>
+        
+              </div>
+            </div>
+          </div>
+          <!-- Container-fluid starts-->
+          <div class="container-fluid">
+            <div class="row"> 
+              <div class="col-sm-12"> 
+                <div class="card"> 
+                  <div class="card-body">
+                    <div class="list-product-header">
+                      <div> 
+                      </div>
+                      <div class="collapse" id="collapseProduct">
+                        <div class="card card-body list-product-body">
+                          <div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2 g-3"> 
+                         
+                    
+                      
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="list-product list-category">
+                      <table class="table" id="project-status">
+                        <thead> 
+                          <tr> 
+                            <th>
+
+
+                              <!-- <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox"/>
+                              </div> -->
+                              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+                            </th>
+                            {% comment %} <th> <span class="f-light f-w-600">S/N</span></th> {% endcomment %}
+                            <th> <span class="f-light f-w-800">Document</span></th>
+                            <th> <span class="f-light f-w-800">Title</span></th>
+                            <th> <span class="f-light f-w-800">Remove</span></th>
+                          </tr>
+                        </thead>
+                        <tbody> 
+
+
+                          {% for doc in documents %}
+                          <tr class="product-removes">
+
+                            
+                            <td>
+                              <div class="form-check"> 
+                                {{ forloop.counter}}
+                              </div>
+                            </td>
+
+
+
+                            <td> 
+                        <div class="product-names" style="width: 15%; height: auto;">
+                        <div class="light-product-box" style="width: 100%; height: auto;">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-image-url="{{ doc.file.url }}">
+                                <img class="img-fluid" src="{{doc.file.url}}" alt="{{ doc.title }}" style="width: 100%; height: auto; cursor: pointer;"/>
+                            </a>
+                        </div>
+                    </div>
+
+                            <td> 
+                              <h5 class="f-light">{{doc.title}}</h5>
+                            </td>
+
+
+                            <td> 
+                              <div class="product-action">
+                                <form action="{% url 'remove_doc' doc.id %}" method="POST" style="display:inline;">
+                                  {% csrf_token %}
+                                  <button type="submit" onclick="return confirm('Are you sure you want to delete this document?')" style="border:none; background:none;">
+                                    <i class="fas fa-trash text-danger fa-2x"></i>
+                                  </button>
+                              </form>
+                              
+                              </div>
+                            </td>
+
+
+                          </tr>
+
+                          {% endfor %}
+
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Container-fluid starts-->
+        </div>
+   
+      </div>
+
+
+
+
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Document View</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" id="modalImage" class="img-fluid" alt="Document Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+    // JavaScript to handle modal image source
+    var imageModal = document.getElementById('imageModal');
+    imageModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var imageUrl = button.getAttribute('data-image-url');
+        var modalImage = imageModal.querySelector('#modalImage');
+        modalImage.src = imageUrl;
+    });
+</script>
+
+
+  
+  
+
+  
+
+
+
+
+    {% endblock %}
+
+
+

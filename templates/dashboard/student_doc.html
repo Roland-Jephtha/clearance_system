@@ -1,0 +1,192 @@
+
+
+
+
+{% extends 'base.html' %}
+
+
+
+
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+
+        <div class="page-body">
+          <div class="container-fluid">
+            <div class="page-title">
+              <div class="row">
+                <div class="col-sm-6 col-12"> 
+                  <h2>Students</h2>
+                </div>
+        
+              </div>
+            </div>
+          </div>
+          <!-- Container-fluid starts-->
+          <div class="container-fluid">
+            <div class="row"> 
+              <div class="col-sm-12"> 
+                <div class="card"> 
+                  <div class="card-body">
+                    <div class="list-product-header">
+                      <div> 
+                      </div>
+                      <div class="collapse" id="collapseProduct">
+                        <div class="card card-body list-product-body">
+                          <div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2 g-3"> 
+                         
+                    
+                      
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="list-product list-category">
+                      <table class="table" id="project-status">
+                        <thead> 
+                          <tr> 
+                            <th>
+
+
+                              <!-- <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox"/>
+                              </div> -->
+                              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+                            </th>
+                            {% comment %} <th> <span class="f-light f-w-600">S/N</span></th> {% endcomment %}
+                            <th> <span class="f-light f-w-800">Student Name</span></th>
+                            <th> <span class="f-light f-w-800">Student Mat-No</span></th>
+                            <th> <span class="f-light f-w-800">Department</span></th>
+                            <th> <span class="f-light f-w-800">View</span></th>
+                            <th> <span class="f-light f-w-800">Status</span></th>
+
+                          </tr>
+                        </thead>
+                        <tbody> 
+
+
+                          {% for student in students %}
+                          <tr class="product-removes">
+
+                            
+                            <td>
+                              <div class="form-check"> 
+                                {{ forloop.counter}}
+                              </div>
+                            </td>
+
+
+
+                            <td> 
+                              <h5 class="f-light">{{ student.user.username }}</h5>
+
+                            </td>
+
+
+                            <td> 
+                              <h5 class="f-light">{{ student.mat_no }}</h5>
+                            </td>
+
+
+                            <td> 
+                              <h5 class="f-light">{{ student.department }}</h5>
+                            </td>
+
+
+                            <td> 
+                              <a href="{% url 'view_student_docs' student.id %}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-eye"></i> View
+                              </a>
+                              
+                            </td>
+
+
+
+
+
+
+
+                                                                    <td>
+                                          {% with overall_status=student.overall_clearance_status %}
+                                            {% if overall_status == "Completely Approved" %}
+                                              <span class="badge bg-success d-block mb-1">{{ overall_status }}</span>
+
+                                              {% if user.position == "student_affair" %}
+                                                {% if not student.has_statement_of_result %}
+                                                  <!-- Button to open modal -->
+                                                  <button class="btn btn-sm btn-info d-block" data-bs-toggle="modal" data-bs-target="#sorModal-{{ student.id }}">Generate SOR</button>
+                                                {% else %}
+                                                  <span class="badge bg-secondary d-block">SOR Generated</span>
+                                                {% endif %}
+                                              {% endif %}
+
+                                            {% elif overall_status == "In Progress" %}
+                                              <span class="badge bg-warning text-dark">{{ overall_status }}</span>
+                                            {% else %}
+                                              <span class="badge bg-info text-dark">{{ overall_status }}</span>
+                                            {% endif %}
+                                          {% endwith %}
+                                        </td>
+
+
+                          </tr>
+
+
+
+
+                           <!-- SOR Modal for {{ student.user.username }} -->
+                                        <div class="modal fade" id="sorModal-{{ student.id }}" tabindex="-1" aria-labelledby="sorModalLabel-{{ student.id }}" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <form method="POST" action="{% url 'create_statement_of_result' student.id %}">
+                                                {% csrf_token %}
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="sorModalLabel-{{ student.id }}">Generate Statement of Result</h5>
+                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                  {{ form.as_p }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                  <button type="submit" class="btn btn-primary">Generate</button>
+                                                </div>
+                                              </form>
+                                            </div>
+                                          </div>
+                                        </div>
+
+
+                          {% endfor %}
+
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Container-fluid starts-->
+        </div>
+   
+      </div>
+
+
+
+
+
+
+
+
+
+
+    {% endblock %}

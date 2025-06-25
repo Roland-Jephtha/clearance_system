@@ -1,0 +1,574 @@
+
+
+
+
+{% extends 'base.html' %}
+
+
+
+
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+<style>
+  #project-status td, 
+  #project-status th {
+    padding-top: 0.4rem; /* Keep or adjust top padding */
+    padding-bottom: 0.4rem; /* Keep or adjust bottom padding */
+    padding-left: 0.1rem; /* Further reduce left padding */
+    padding-right: 0.1rem; /* Further reduce right padding */
+  }
+  #project-status .badge {
+    margin-bottom: 0.15rem !important; /* Reduce margin below badges if they are stacked */
+  }
+  #project-status .btn-xs { /* If you are using btn-xs, ensure its padding is minimal */
+    padding: 0.1rem 0.3rem;
+    font-size: 0.75rem;
+  }
+</style>
+
+
+
+        <div class="page-body">
+          <div class="container-fluid">
+            <div class="page-title">
+              <div class="row">
+                <div class="col-sm-6 col-12"> 
+                  <h3> {{student.user.username | title}} Documents</h3>
+                </div>
+                              <div class="col-sm-6 col-12 d-flex align-items-center justify-content-sm-end flex-wrap gap-2">
+
+                                {% with overall_status=student.overall_clearance_status %}
+                                  {% if overall_status == "Completely Approved" %}
+                                    <span class="badge bg-success fs-6">{{ overall_status }}</span>
+
+                                    {% if user.position == "student_affair" %}
+                                      {% if not student.has_statement_of_result %}
+                                        <!-- <a href="{% url 'create_statement_of_result' student.id %}" class="btn btn-sm btn-info">Generate SOR</a> -->
+                                      {% else %}
+                                        <span class="badge bg-secondary fs-6">SOR Generated</span>
+                                      {% endif %}
+                                    {% endif %}
+
+                                  {% elif overall_status == "In Progress" %}
+                                    <span class="badge bg-warning text-dark fs-6">{{ overall_status }}</span>
+                                  {% else %}
+                                    <span class="badge bg-info text-dark fs-6">{{ overall_status }}</span>
+                                  {% endif %}
+                                {% endwith %}
+
+                                  <a href="#" class="btn btn-sm btn-info " data-bs-toggle="modal" data-bs-target="#reviewModal">Give Review</a>
+
+                              </div>
+
+        
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- Container-fluid starts-->
+          <div class="container-fluid">
+            <div class="row"> 
+              <div class="col-sm-12"> 
+                <div class="card"> 
+                  <div class="card-body">
+                    <div class="list-product-header">
+                      <div> 
+                      </div>
+                      <div class="collapse" id="collapseProduct">
+                        <div class="card card-body list-product-body">
+                          <div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2 g-3"> 
+                         
+                    
+                      
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="list-product list-category">
+                      <div style="overflow-x: auto;"> <!-- Wrapper div for horizontal scrolling -->
+                        <table class="table" id="project-status" style="min-width: 1200px;"> <!-- Optional: Set a min-width for the table -->
+                        <thead> 
+                          <tr> 
+                            <th>
+
+
+                              <!-- <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox"/>
+                              </div> -->
+                              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+                            </th>
+                            <th> <span class="f-light f-w-600">S/N</span></th>
+                            <th> <span class="f-light f-w-800">Document</span></th>
+                            <th> <span class="f-light f-w-800">Title</span></th>
+
+                            {% if user.position == "hod" %}
+
+                            <th> <span class="f-light f-w-800">HOD</span></th>
+
+
+                            {% elif user.position == "sug" %}
+                            <th> <span class="f-light f-w-800">HOD</span></th>
+                            <th> <span class="f-light f-w-800">SUG</span></th>
+
+
+
+                            {% elif user.position == "hostel" %}
+                            <th> <span class="f-light f-w-800">HOD</span></th>
+                            <th> <span class="f-light f-w-800">SUG</span></th>
+                            <th> <span class="f-light f-w-800">Hostel</span></th>
+
+
+
+
+                            {% elif user.position == "library" %}
+                            <th> <span class="f-light f-w-800">HOD</span></th>
+                            <th> <span class="f-light f-w-800">SUG</span></th>
+                            <th> <span class="f-light f-w-800">Hostel</span></th>
+                            <th> <span class="f-light f-w-800">Library</span></th>
+
+
+
+
+                            {% elif user.position == "sport_director" %}
+                            <th> <span class="f-light f-w-800">HOD</span></th>
+                            <th> <span class="f-light f-w-800">SUG</span></th>
+                            <th> <span class="f-light f-w-800">Hostel</span></th>
+                            <th> <span class="f-light f-w-800">Library</span></th>
+                            <th> <span class="f-light f-w-800">Sports Director</span></th>
+
+
+
+                            {% elif user.position == "exams_and_records" %}
+                            <th> <span class="f-light f-w-800">HOD</span></th>
+                            <th> <span class="f-light f-w-800">SUG</span></th>
+                            <th> <span class="f-light f-w-800">Hostel</span></th>
+                            <th> <span class="f-light f-w-800">Library</span></th>
+                            <th> <span class="f-light f-w-800">Sports Director</span></th>
+                            <th> <span class="f-light f-w-800">Exams and Record</span></th>
+
+
+                            
+                            {% elif user.position == "student_affair" %}
+                            <th> <span class="f-light f-w-800">HOD</span></th>
+                            <th> <span class="f-light f-w-800">SUG</span></th>
+                            <th> <span class="f-light f-w-800">Hostel</span></th>
+                            <th> <span class="f-light f-w-800">Library</span></th>
+                            <th> <span class="f-light f-w-800">Sports Director</span></th>
+                            <th> <span class="f-light f-w-800">Exams and Record</span></th>
+                            <th> <span class="f-light f-w-800">Student Affair</span></th>
+
+
+
+
+
+                       
+
+                            {%endif%}
+                          </tr>
+                        </thead>
+                 
+                 
+                 
+                 
+          
+                 
+                        <tbody> 
+
+
+
+
+
+{% for doc in documents %}
+<tr class="product-removes">
+    <td style="padding-left: 2.5em;">
+                    {{ forloop.counter}}
+ 
+    </td>
+
+
+    
+    <td>
+        {% if user.position %}
+            <div class="form-check">
+            
+           
+                </label>
+            </div>
+        {% else %}
+            <div class="form-check">
+                {{ forloop.counter}}
+            </div>
+        {% endif %}
+    </td>
+
+
+
+
+    <td>
+        <div class="product-names" style="width: 15%; height: auto;">
+            <div class="light-product-box" style="width: 100%; height: auto;">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-image-url="{{ doc.file.url }}">
+                    <img class="img-fluid" src="{{doc.file.url}}" alt="{{ doc.title }}" style="width: 100%; height: auto; cursor: pointer;"/>
+                </a>
+            </div>
+        </div>
+    </td>
+
+    <td>
+        <h5 class="f-light">{{doc.title}}</h5>
+    </td>
+
+    <!-- HOD Column - Always shown -->
+    <td>
+        {% if user.position == "hod" %}
+            <!-- Editable for HOD -->
+            {% if doc.hod_approved %}
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge bg-success"> <!-- Removed mb-1, handled by general style -->
+                        <i class="fa-solid fa-check"></i> Approved
+                    </span>
+                    <a href="{% url 'disapprove_doc' doc.id 'hod_approved' %}" 
+                       class="btn btn-xs btn-outline-danger"
+                       onclick="return confirm('Are you sure you want to disapprove this document?')">
+                        <i class="fa-solid fa-times"></i> Revoke
+                    </a>
+                </div>
+            {% else %}
+                <a href="{% url 'approve_doc' doc.id 'hod_approved' %}" 
+                   class="btn btn-sm btn-outline-primary">
+                    <i class="fa-regular fa-square"></i> Approve
+                </a>
+            {% endif %}
+        {% else %}
+            <!-- Static for others -->
+            {% if doc.hod_approved %}
+                <span class="badge bg-success">
+                    <i class="fa-solid fa-check"></i> Approved
+                    {% if doc.hod_approved_by %}
+                        <br><small>by {{ doc.hod_approved_by.get_full_name|default:doc.hod_approved_by.username }}</small>
+                    {% endif %}
+                </span>
+            {% else %}
+                <span class="badge bg-secondary">
+                    <i class="fa-regular fa-square"></i> Pending
+                </span>
+            {% endif %}
+        {% endif %}
+    </td>
+
+    <!-- SUG Column - Show if user position is sug or higher -->
+    {% if user.position == "sug" or user.position == "hostel" or user.position == "library" or user.position == "sport_director" or user.position == "exams_and_records" or user.position == "student_affair" %}
+    <td>
+        {% if user.position == "sug" %}
+            <!-- Editable for SUG -->
+            {% if doc.sug_approved %}
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge bg-success"> <!-- Removed mb-1 -->
+                        <i class="fa-solid fa-check"></i> Approved
+                    </span>
+                    <a href="{% url 'disapprove_doc' doc.id 'sug_approved' %}" 
+                       class="btn btn-xs btn-outline-danger"
+                       onclick="return confirm('Are you sure you want to disapprove this document?')">
+                        <i class="fa-solid fa-times"></i> Revoke
+                    </a>
+                </div>
+            {% else %}
+                <a href="{% url 'approve_doc' doc.id 'sug_approved' %}" 
+                   class="btn btn-sm btn-outline-primary">
+                    <i class="fa-regular fa-square"></i> Approve
+                </a>
+            {% endif %}
+        {% else %}
+            <!-- Static for others -->
+            {% if doc.sug_approved %}
+                <span class="badge bg-success">
+                    <i class="fa-solid fa-check"></i> Approved
+                    {% if doc.sug_approved_by %}
+                        <br><small>by {{ doc.sug_approved_by.get_full_name|default:doc.sug_approved_by.username }}</small>
+                    {% endif %}
+                </span>
+            {% else %}
+                <span class="badge bg-secondary">
+                    <i class="fa-regular fa-square"></i> Pending
+                </span>
+            {% endif %}
+        {% endif %}
+    </td>
+    {% endif %}
+
+    <!-- Hostel Column - Show if user position is hostel or higher -->
+    {% if user.position == "hostel" or user.position == "library" or user.position == "sport_director" or user.position == "exams_and_records" or user.position == "student_affair" %}
+    <td>
+        {% if user.position == "hostel" %}
+            <!-- Editable for Hostel -->
+            {% if doc.hostel_approved %}
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge bg-success"> <!-- Removed mb-1 -->
+                        <i class="fa-solid fa-check"></i> Approved
+                    </span>
+                    <a href="{% url 'disapprove_doc' doc.id 'hostel_approved' %}"
+                       class="btn btn-xs btn-outline-danger"
+                       onclick="return confirm('Are you sure you want to disapprove this document?')">
+                        <i class="fa-solid fa-times"></i> Revoke
+                    </a>
+                </div>
+            {% else %}
+                <a href="{% url 'approve_doc' doc.id 'hostel_approved' %}" 
+                   class="btn btn-sm btn-outline-primary">
+                    <i class="fa-regular fa-square"></i> Approve
+                </a>
+            {% endif %}
+        {% else %}
+            <!-- Static for others -->
+            {% if doc.hostel_approved %}
+                <span class="badge bg-success">
+                    <i class="fa-solid fa-check"></i> Approved
+                    {% if doc.hostel_approved_by %}
+                        <br><small>by {{ doc.hostel_approved_by.get_full_name|default:doc.hostel_approved_by.username }}</small>
+                    {% endif %}
+                </span>
+            {% else %}
+                <span class="badge bg-secondary">
+                    <i class="fa-regular fa-square"></i> Pending
+                </span>
+            {% endif %}
+        {% endif %}
+    </td>
+    {% endif %}
+
+    <!-- Library Column - Show if user position is library or higher -->
+    {% if user.position == "library" or user.position == "sport_director" or user.position == "exams_and_records" or user.position == "student_affair" %}
+    <td>
+        {% if user.position == "library" %}
+            <!-- Editable for Library -->
+            {% if doc.library_approved %}
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge bg-success"> <!-- Removed mb-1 -->
+                        <i class="fa-solid fa-check"></i> Approved
+                    </span>
+                    <a href="{% url 'disapprove_doc' doc.id 'library_approved' %}"
+                       class="btn btn-xs btn-outline-danger"
+                       onclick="return confirm('Are you sure you want to disapprove this document?')">
+                        <i class="fa-solid fa-times"></i> Revoke
+                    </a>
+                </div>
+            {% else %}
+                <a href="{% url 'approve_doc' doc.id 'library_approved' %}" 
+                   class="btn btn-sm btn-outline-primary">
+                    <i class="fa-regular fa-square"></i> Approve
+                </a>
+            {% endif %}
+        {% else %}
+            <!-- Static for others -->
+            {% if doc.library_approved %}
+                <span class="badge bg-success">
+                    <i class="fa-solid fa-check"></i> Approved
+                    {% if doc.library_approved_by %}
+                        <br><small>by {{ doc.library_approved_by.get_full_name|default:doc.library_approved_by.username }}</small>
+                    {% endif %}
+                </span>
+            {% else %}
+                <span class="badge bg-secondary">
+                    <i class="fa-regular fa-square"></i> Pending
+                </span>
+            {% endif %}
+        {% endif %}
+    </td>
+    {% endif %}
+
+    <!-- Sports Director Column - Show if user position is sport_director or higher -->
+    {% if user.position == "sport_director" or user.position == "exams_and_records" or user.position == "student_affair" %}
+    <td>
+        {% if user.position == "sport_director" %}
+            <!-- Editable for Sports Director -->
+            {% if doc.sport_director_approved %}
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge bg-success"> <!-- Removed mb-1 -->
+                        <i class="fa-solid fa-check"></i> Approved
+                    </span>
+                    <a href="{% url 'disapprove_doc' doc.id 'sport_director_approved' %}"
+                       class="btn btn-xs btn-outline-danger"
+                       onclick="return confirm('Are you sure you want to disapprove this document?')">
+                        <i class="fa-solid fa-times"></i> Revoke
+                    </a>
+                </div>
+            {% else %}
+                <a href="{% url 'approve_doc' doc.id 'sport_director_approved' %}" 
+                   class="btn btn-sm btn-outline-primary">
+                    <i class="fa-regular fa-square"></i> Approve
+                </a>
+            {% endif %}
+        {% else %}
+            <!-- Static for others -->
+            {% if doc.sport_director_approved %}
+                <span class="badge bg-success">
+                    <i class="fa-solid fa-check"></i> Approved
+                    {% if doc.sport_director_approved_by %}
+                        <br><small>by {{ doc.sport_director_approved_by.get_full_name|default:doc.sport_director_approved_by.username }}</small>
+                    {% endif %}
+                </span>
+            {% else %}
+                <span class="badge bg-secondary">
+                    <i class="fa-regular fa-square"></i> Pending
+                </span>
+            {% endif %}
+        {% endif %}
+    </td>
+    {% endif %}
+
+    <!-- Exams and Records Column - Show if user position is exams_and_records or higher -->
+    {% if user.position == "exams_and_records" or user.position == "student_affair" %}
+    <td>
+        {% if user.position == "exams_and_records" %}
+            <!-- Editable for Exams and Records - Note: field name is Exam_and_record_approved -->
+            {% if doc.Exam_and_record_approved %}
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge bg-success"> <!-- Removed mb-1 -->
+                        <i class="fa-solid fa-check"></i> Approved
+                    </span>
+                    <a href="{% url 'disapprove_doc' doc.id 'Exam_and_record_approved' %}"
+                       class="btn btn-xs btn-outline-danger"
+                       onclick="return confirm('Are you sure you want to disapprove this document?')">
+                        <i class="fa-solid fa-times"></i> Revoke
+                    </a>
+                </div>
+            {% else %}
+                <a href="{% url 'approve_doc' doc.id 'Exam_and_record_approved' %}"
+                   class="btn btn-sm btn-outline-primary">
+                    <i class="fa-regular fa-square"></i> Approve
+                </a>
+            {% endif %}
+        {% else %}
+            <!-- Static for others -->
+            {% if doc.Exam_and_record_approved %}
+                <span class="badge bg-success">
+                    <i class="fa-solid fa-check"></i> Approved
+                    {% if doc.Exam_and_record_approved_by %}
+                        <br><small>by {{ doc.Exam_and_record_approved_by.get_full_name|default:doc.Exam_and_record_approved_by.username }}</small>
+                    {% endif %}
+                    </span>
+
+            {% else %}
+                <span class="badge bg-secondary">
+                    <i class="fa-regular fa-square"></i> Pending
+                </span>
+            {% endif %}
+        {% endif %}
+    </td>
+    {% endif %}
+
+    <!-- Student Affair Column - Show only for student_affair -->
+    {% if user.position == "student_affair" %}
+    <td>
+        <!-- Editable for Student Affair -->
+        {% if doc.student_affair_approved %}
+            <div class="d-flex flex-column align-items-center">
+                <span class="badge bg-success"> <!-- Removed mb-1 -->
+                    <i class="fa-solid fa-check"></i> Approved
+                </span>
+                <a href="{% url 'disapprove_doc' doc.id 'student_affair_approved' %}"
+                   class="btn btn-xs btn-outline-danger"
+                   onclick="return confirm('Are you sure you want to disapprove this document?')">
+                    <i class="fa-solid fa-times"></i> Revoke
+                </a>
+            </div>
+        {% else %}
+            <a href="{% url 'approve_doc' doc.id 'student_affair_approved' %}" 
+               class="btn btn-sm btn-outline-primary">
+                <i class="fa-regular fa-square"></i> Approve
+            </a>
+        {% endif %}
+    </td>
+    {% endif %}
+
+</tr>
+
+
+
+
+
+
+<!-- Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form method="post" action="{% url 'send_review' doc.id %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="reviewModalLabel">Send Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="reviewMessage" class="form-label">Message</label>
+            <textarea name="message" class="form-control" id="reviewMessage" rows="4" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Send Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+</tbody>
+</table>
+                      </div> <!-- Closing the wrapper div -->
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Document View</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" id="modalImage" class="img-fluid" alt="Document Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // JavaScript to handle modal image source
+    var imageModal = document.getElementById('imageModal');
+    imageModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var imageUrl = button.getAttribute('data-image-url');
+        var modalImage = imageModal.querySelector('#modalImage');
+        modalImage.src = imageUrl;
+    });
+</script>
+
+
+  
+
+  
+
+
+
+
+    {% endblock %}

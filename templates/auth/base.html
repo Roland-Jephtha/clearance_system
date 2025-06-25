@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities."/>
+    <meta name="keywords" content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app"/>
+    <meta name="author" content="pixelstrap"/>
+    <title>Admiro - Premium Admin Template</title>
+    <!-- Favicon icon-->
+    <link rel="icon" href="{% static 'assets/images/favicon.png' %}" type="image/x-icon"/>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" type="image/x-icon"/>
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com/"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap" rel="stylesheet"/>
+    <!-- Flag icon css -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}"/>
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}"/>
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}"/>
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}"/>
+    <!-- Weather Icon css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/date-picker.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}"/>
+    <!-- App css -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"/>
+    <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Nunito Sans', sans-serif;
+      }
+      
+      .navbar {
+          background: linear-gradient(135deg, #bfd0e6 0%, #1a3563 100%);
+          /* background: linear-gradient(135deg, #2b4d7a 0%, #1a3563 100%); */
+          padding: 0;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+      }
+      
+      .navbar-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.8rem 5%;
+          max-width: 1400px;
+          margin: 0 auto;
+      }
+      
+      .navbar-logo {
+          display: flex;
+          align-items: center;
+      }
+      
+      .navbar-logo img {
+          height: 40px;
+          margin-right: 10px;
+      }
+      
+      .logo-text {
+          color: white;
+          font-size: 1.5rem;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+      }
+      
+      .nav-links {
+          display: flex;
+          list-style: none;
+      }
+      
+      .nav-links li {
+          position: relative;
+          margin: 0 5px;
+      }
+      
+      .nav-links a {
+          color: rgba(255, 255, 255, 0.9);
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 1rem;
+          padding: 0.8rem 1.2rem;
+          border-radius: 4px;
+          transition: all 0.3s ease;
+          display: block;
+      }
+      
+      .nav-links a:hover {
+          color: white;
+          background-color: rgba(255, 255, 255, 0.1);
+          transform: translateY(-2px);
+      }
+      
+      .nav-links a.active {
+          color: white;
+          background-color: rgba(255, 255, 255, 0.15);
+      }
+      
+      .hamburger {
+          display: none;
+          cursor: pointer;
+          background: none;
+          border: none;
+          color: white;
+          font-size: 1.5rem;
+      }
+      
+      .nav-buttons {
+          display: flex;
+          align-items: center;
+      }
+      
+      .login-btn, .signup-btn {
+          padding: 0.5rem 1.2rem;
+          border-radius: 4px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          margin-left: 10px;
+          text-decoration: none;
+      }
+      
+      .login-btn {
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+      
+      .login-btn:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          border-color: white;
+      }
+      
+      .signup-btn {
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+      }
+      
+      .signup-btn:hover {
+          background-color: #45a049;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      @media (max-width: 992px) {
+          .nav-links {
+              position: fixed;
+              top: 70px;
+              left: -100%;
+              flex-direction: column;
+              background: #1a3563;
+              width: 100%;
+              text-align: center;
+              transition: all 0.3s ease;
+              box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+          }
+          
+          .nav-links.active {
+              left: 0;
+          }
+          
+          .nav-links li {
+              margin: 10px 0;
+          }
+          
+          .hamburger {
+              display: block;
+          }
+          
+          .nav-buttons {
+              margin-right: 50px;
+          }
+      }
+      
+      @media (max-width: 768px) {
+          .navbar-container {
+              padding: 0.8rem 4%;
+          }
+          
+          .logo-text {
+              font-size: 1.3rem;
+          }
+          
+          .nav-buttons {
+              display: none;
+          }
+          
+          .nav-links .nav-buttons-mobile {
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+              padding: 15px;
+          }
+          
+          .nav-links .login-btn, 
+          .nav-links .signup-btn {
+              margin: 5px 0;
+              width: 100%;
+              text-align: center;
+          }
+      }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+      <div class="navbar-container">
+          <div class="navbar-logo" style="margin-right: 2em;">
+              <img src="{% static 'assets/images/pti_logo.png' %}" alt="Admiro Logo" style="width: 4em; height: 4em;">
+              <span class="logo-text">Clearance System</span>
+          </div>
+          
+          <button class="hamburger" id="hamburger">
+              <i class="fas fa-bars"></i>
+          </button>
+          
+          <ul class="nav-links" id="navLinks">
+              <!-- <li><a href="/" class="active">Dashboard</a></li> -->
+              <li><a href="/apps">Home</a></li>
+
+             <li><a href="/user/login" class="login-btn">Login</a></li> 
+             <li><a href="/user/register" class="signup-btn">Register</a></li> 
+
+              
+           
+          </ul>
+          
+
+      </div>
+  </nav>
+  
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const hamburger = document.getElementById('hamburger');
+          const navLinks = document.getElementById('navLinks');
+          
+          hamburger.addEventListener('click', function() {
+              navLinks.classList.toggle('active');
+              
+              // Change hamburger icon
+              const icon = hamburger.querySelector('i');
+              if (navLinks.classList.contains('active')) {
+                  icon.classList.remove('fa-bars');
+                  icon.classList.add('fa-times');
+              } else {
+                  icon.classList.remove('fa-times');
+                  icon.classList.add('fa-bars');
+              }
+          });
+          
+          // Close menu when clicking outside
+          document.addEventListener('click', function(event) {
+              const isClickInsideNav = navLinks.contains(event.target);
+              const isClickOnHamburger = hamburger.contains(event.target);
+              
+              if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
+                  navLinks.classList.remove('active');
+                  const icon = hamburger.querySelector('i');
+                  icon.classList.remove('fa-times');
+                  icon.classList.add('fa-bars');
+              }
+          });
+          
+          // Close menu when window is resized
+          window.addEventListener('resize', function() {
+              if (window.innerWidth > 992 && navLinks.classList.contains('active')) {
+                  navLinks.classList.remove('active');
+                  const icon = hamburger.querySelector('i');
+                  icon.classList.remove('fa-times');
+                  icon.classList.add('fa-bars');
+              }
+          });
+      });
+  </script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>                    
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      {% if messages %}
+        {% for message in messages %}
+          {% if message.tags == 'success' %}
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: '{{ message }}',
+              confirmButtonText: 'OK'
+            });
+          {% elif message.tags == 'error' %}
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: '{{ message }}',
+              confirmButtonText: 'OK'
+            });
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    });
+  </script>
+
+
+
+    {% block content %}
+{% endblock %}
+
+
+<!-- password_show-->
+<script src="{% static 'assets/js/password.js' %}"></script>
+<!-- custom script -->
+
+<!-- jQuery -->
+<script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+<!-- bootstrap js -->
+<script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+<script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+<!-- fontawesome -->
+<script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+<!-- sidebar -->
+<script src="{% static 'assets/js/sidebar.js' %}"></script>
+<!-- config -->
+<script src="{% static 'assets/js/config.js' %}"></script>
+<!-- apex -->
+<script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+<script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+<!-- scrollbar -->
+<script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+<script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+<!-- slick -->
+<script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+<script src="{% static 'assets/js/slick/slick.js' %}"></script>
+<!-- date picker -->
+<script src="{% static 'assets/js/datepicker/date-picker/datepicker.js' %}"></script>
+<script src="{% static 'assets/js/datepicker/date-picker/datepicker.en.js' %}"></script>
+<script src="{% static 'assets/js/datepicker/date-picker/datepicker.custom.js' %}"></script>
+<!-- data_table -->
+<script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+<!-- page_datatable -->
+<script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+<!-- page_datatable1 -->
+<script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+<!-- page_datatable -->
+<script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+<!-- theme_customizer -->
+<script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+<!-- dashboard_3 -->
+<script src="{% static 'assets/js/dashboard/dashboard_3.js' %}"></script>
+<!-- echart_pie -->
+<script src="{% static 'assets/js/chart/echart/pie-chart/facePrint.js' %}"></script>
+<script src="{% static 'assets/js/chart/echart/pie-chart/testHelper.js' %}"></script>
+<script src="{% static 'assets/js/chart/echart/pie-chart/custom-transition-texture.js' %}"></script>
+<script src="{% static 'assets/js/chart/echart/data/symbols.js' %}"></script>
+<!-- morrischart -->
+<script src="{% static 'assets/js/chart/morris-chart/raphael.js' %}"></script>
+<script src="{% static 'assets/js/chart/morris-chart/morris.js' %}"></script>
+<script src="{% static 'assets/js/chart/morris-chart/prettify.min.js' %}"></script>
+<!-- custom script -->
+<script src="{% static 'assets/js/script.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Admiro admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities."/>
+    <meta name="keywords" content="admin template, Admiro admin template, best javascript admin, dashboard template, bootstrap admin template, responsive admin template, web app"/>
+    <meta name="author" content="pixelstrap"/>
+    <title>Admiro - Premium Admin Template</title>
+    <!-- Favicon icon-->
+    <link rel="icon" href="{% static 'assets/images/favicon.png' %}" type="image/x-icon"/>
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" type="image/x-icon"/>
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com/"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&amp;display=swap" rel="stylesheet"/>
+    <!-- Flag icon css -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendors/flag-icon.css' %}"/>
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/iconly-icon.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/bulk-style.css' %}"/>
+    <!-- iconly-icon-->
+    <link rel="stylesheet" href="{% static 'assets/css/themify.css' %}"/>
+    <!--fontawesome-->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-min.css' %}"/>
+    <!-- Weather Icon css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/weather-icons/weather-icons.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/scrollbar.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/date-picker.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/vendors/slick-theme.css' %}"/>
+    <!-- App css -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"/>
+    <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen"/>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+    <!-- page-wrapper Start-->
+    <!-- tap on top starts-->
+    <div class="tap-top"><i class="iconly-Arrow-Up icli"></i></div>
+    <!-- tap on tap ends-->
+    <!-- loader-->
+    <div class="loader-wrapper">
+      <div class="loader"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="page-wrapper compact-wrapper" id="pageWrapper"> 
+        <header class="page-header row">
+            <div class="logo-wrapper d-flex align-items-center col-auto">
+                <a href="index-2.html">
+
+                    <img class="light-logo img-fluid" src="{% static 'assets/images/pti.png' %}" alt="logo" style="width: 4em;"/>
+                    <img class="dark-logo img-fluid" src="{% static 'assets/images/pti.png' %}" alt="logo" style="width: 4em;" />
+                </a>
+                <a class="close-btn toggle-sidebar" href="javascript:void(0)">
+                    <i class="fas fa-bars"></i>
+                </a>
+            </div>
+        
+            <div class="page-main-header col">
+                <div class="header-left">
+                    <form class="form-inline search-full col" action="#" method="get">
+                        <div class="form-group w-100">
+                            <div class="u-posRelative">
+                                <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search..." name="q" autofocus="autofocus"/>
+                                <div class="spinner-border Typeahead-spinner" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                <i class="fas fa-times close-search"></i>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        
+                <div class="nav-right">
+                    <ul class="header-right"> 
+                        <li class="search d-lg-none d-flex"> 
+                            <a href="javascript:void(0)">
+                                <i class="fas fa-search"></i>
+                            </a>
+                        </li>
+
+
+        
+                        {% comment %} <li>  
+                            <a class="dark-mode" href="javascript:void(0)">
+                                <i class="fas fa-moon"></i>
+                            </a>
+                        </li> {% endcomment %}
+        
+                        {% comment %} <li class="custom-dropdown">
+                            <a href="javascript:void(0)">
+                                <i class="fas fa-bell"></i>
+                            </a>
+                            <span class="badge rounded-pill badge-primary">4</span>
+                        </li>
+         {% endcomment %}
+
+                        <li>  
+                            <a class="full-screen" href="javascript:void(0)"> 
+                                <i class="fas fa-expand"></i>
+                            </a>
+                        </li>
+        
+                        <li class="profile-nav custom-dropdown">
+                            <div class="user-wrap">
+                                <div class="user-img">
+                                  {% if profile.image%}
+                                    <img src="{{profile.image.url}}" alt="user"/>
+                                  {% else%}
+                                    <img src="" alt="user"/>
+                                  {% endif %}
+                                </div>
+                                <div class="user-content">
+                                    <h6>{{profile.user.username | title}}</h6>
+                                    <p class="mb-0">{{profile.user.position | title}} <i class="fas fa-chevron-down"></i></p>
+                                </div>
+                            </div>
+                            <div class="custom-menu overflow-hidden">
+                                <ul class="profile-body">
+                                    <li class="d-flex"> 
+                                        <i class="fas fa-user"></i>
+                                        <a class="ms-2" href="user-profile.html">Profile</a>
+                                    </li>
+                                    <li class="d-flex"> 
+                                        <i class="fas fa-sign-out-alt text-danger"></i>
+                                        <a class="ms-2 text-danger" href="{% url 'logout' %}">Log Out</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        
+        <!-- FontAwesome CDN -->
+        
+      <!-- Page Body Start-->
+
+
+      <div class="page-body-wrapper"> 
+        <!-- Page sidebar start-->
+        <aside class="page-sidebar" > 
+          <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+          <div class="main-sidebar" id="main-sidebar" >
+            <ul class="sidebar-menu" id="simple-bar">
+              <li class="pin-title sidebar-main-title">  
+                <div> 
+                  <h5 class="sidebar-title f-w-700">Pinned</h5>
+                </div>
+              </li>
+
+
+
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'dashboard' %}">
+                <i class="fas fa-tachometer-alt"></i>
+
+                <h6 class="f-w-150">Dashboard </h6></a>
+            </li>
+
+
+
+
+{% comment %}             
+                        <li class="sidebar-list"> <a class="sidebar-link" href="#">
+                          <i class="fas fa-list"></i>
+            
+                          <h6 class="f-w-150">Document Requirements </h6></a>
+                      </li> {% endcomment %}
+
+
+
+
+            {% if user.position == "student" %}
+
+
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'upload_doc' %}">
+                <i class="fas fa-upload"></i>
+
+                <h6 class="f-w-150">Upload Documents </h6></a>
+            </li>
+
+
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'my_doc' %}">
+              <i class="fas fa-folder"></i>
+
+              <h6 class="f-w-150">My Documents </h6></a>
+          </li>
+
+
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'statement_result' %}">
+              <i class="fas fa-list"></i>
+
+              <h6 class="f-w-150">Statement of Result </h6></a>
+          </li>
+
+
+
+
+          
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'student_profile' %}">
+                <i class="fas fa-user"></i>
+
+                <h6 class="f-w-150">Profile </h6></a>
+            </li>
+
+
+          {% elif user.position == "student_affair"  %}
+
+
+
+            
+            
+            
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'student_doc' %}">
+              <i class="fas fa-users"></i>
+              
+              <h6 class="f-w-600">Student Documents </h6></a>
+            </li>
+
+
+
+
+                       <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'statement_list' %}"> {# Or a different staff-specific SOR overview if needed #}
+                          <i class="fas fa-list"></i>
+            
+                          <h6 class="f-w-150">Generated SORs </h6></a>
+                      </li>
+
+
+
+
+                                  
+            
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'send_announcement' %}">
+              <i class="fas fa-users"></i>
+              
+              <h6 class="f-w-600">Anouncements </h6></a>
+            </li>
+
+
+                      
+    
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'profile' %}">
+                <i class="fas fa-user"></i>
+
+                <h6 class="f-w-150">Profile </h6></a>
+            </li>
+
+
+            {%else%}
+
+
+
+
+
+
+        
+            
+            
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'student_doc' %}">
+              <i class="fas fa-users"></i>
+              
+              <h6 class="f-w-600">Student Documents </h6></a>
+            </li>
+            
+
+
+        
+            
+            
+            <li class="sidebar-list"> <a class="sidebar-link" href="#">
+              <i class="fas fa-users"></i>
+              
+              <h6 class="f-w-600">Anouncements </h6></a>
+            </li>
+            
+            {% comment %} Staff might not need direct access to "Statement of Result" this way, they generate it. {% endcomment %}
+           
+
+            
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'profile' %}">
+                <i class="fas fa-user"></i>
+
+                <h6 class="f-w-150">Profile </h6></a>
+            </li>
+          
+        {%endif%}
+
+
+
+
+
+
+
+
+
+
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'logout' %}">
+                <i class="fas fa-sign-out-alt text-danger"></i>
+
+                <h6 class="f-w-150" style="color: red;">Logout </h6></a>
+            </li>
+
+
+
+         
+
+            </ul>
+          </div>
+          <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+        </aside>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>                    
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              {% if messages %}
+                {% for message in messages %}
+                  {% if message.tags == 'success' %}
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: '{{ message }}',
+                      confirmButtonText: 'OK'
+                    });
+                  {% elif message.tags == 'error' %}
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: '{{ message }}',
+                      confirmButtonText: 'OK'
+                    });
+                  {% elif message.tags == 'info' %}
+                    Swal.fire({
+                      icon: 'info',
+                      title: 'info...',
+                      text: '{{ message }}',
+                      confirmButtonText: 'OK'
+                    });
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            });
+          </script>
+
+
+
+
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+          {% block content %}
+          {% endblock content %}
+
+
+
+
+
+
+
+
+
+    </div>
+
+        <footer class="footer"> 
+          <div class="container-fluid">
+            <div class="row"> 
+              <div class="col-md-6 footer-copyright">
+                <p class="mb-0">Copyright 2025 © PTI Clearance System.</p>
+              </div>
+              <div class="col-md-6">
+       
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- jquery-->
+   <!-- jQuery -->
+<script src="{% static 'assets/js/vendors/jquery/jquery.min.js' %}"></script>
+<!-- bootstrap js -->
+<script src="{% static 'assets/js/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}" defer=""></script>
+<script src="{% static 'assets/js/vendors/bootstrap/dist/js/popper.min.js' %}" defer=""></script>
+<!-- fontawesome -->
+<script src="{% static 'assets/js/vendors/font-awesome/fontawesome-min.js' %}"></script>
+<!-- sidebar -->
+<script src="{% static 'assets/js/sidebar.js' %}"></script>
+<!-- config -->
+<script src="{% static 'assets/js/config.js' %}"></script>
+<!-- apex -->
+<script src="{% static 'assets/js/chart/apex-chart/apex-chart.js' %}"></script>
+<script src="{% static 'assets/js/chart/apex-chart/stock-prices.js' %}"></script>
+<!-- scrollbar -->
+<script src="{% static 'assets/js/scrollbar/simplebar.js' %}"></script>
+<script src="{% static 'assets/js/scrollbar/custom.js' %}"></script>
+<!-- slick -->
+<script src="{% static 'assets/js/slick/slick.min.js' %}"></script>
+<script src="{% static 'assets/js/slick/slick.js' %}"></script>
+<!-- date picker -->
+<script src="{% static 'assets/js/datepicker/date-picker/datepicker.js' %}"></script>
+<script src="{% static 'assets/js/datepicker/date-picker/datepicker.en.js' %}"></script>
+<script src="{% static 'assets/js/datepicker/date-picker/datepicker.custom.js' %}"></script>
+<!-- data_table -->
+<script src="{% static 'assets/js/js-datatables/datatables/jquery.dataTables.min.js' %}"></script>
+<!-- page_datatable -->
+<script src="{% static 'assets/js/js-datatables/datatables/datatable.custom.js' %}"></script>
+<!-- page_datatable1 -->
+<script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
+<!-- page_datatable -->
+<script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
+<!-- theme_customizer -->
+<script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+<!-- dashboard_3 -->
+<script src="{% static 'assets/js/dashboard/dashboard_3.js' %}"></script>
+<!-- echart_pie -->
+<script src="{% static 'assets/js/chart/echart/pie-chart/facePrint.js' %}"></script>
+<script src="{% static 'assets/js/chart/echart/pie-chart/testHelper.js' %}"></script>
+<script src="{% static 'assets/js/chart/echart/pie-chart/custom-transition-texture.js' %}"></script>
+<script src="{% static 'assets/js/chart/echart/data/symbols.js' %}"></script>
+<!-- morrischart -->
+<script src="{% static 'assets/js/chart/morris-chart/raphael.js' %}"></script>
+<script src="{% static 'assets/js/chart/morris-chart/morris.js' %}"></script>
+<script src="{% static 'assets/js/chart/morris-chart/prettify.min.js' %}"></script>
+<!-- custom script -->
+<script src="{% static 'assets/js/script.js' %}"></script>
+  </body>
+</html>

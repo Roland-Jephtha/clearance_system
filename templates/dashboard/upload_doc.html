@@ -1,0 +1,100 @@
+
+
+
+
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+
+        <div class="page-body">
+          <div class="container-fluid">
+            <div class="page-title">
+              <div class="row">
+                <div class="col-sm-6 col-12">
+                  <h2>Upload Document</h2>
+                </div>
+    
+              </div>
+            </div>
+          </div>
+          <!-- Container-fluid starts  -->
+          <div class="container-fluid">
+            <div class="row">
+
+
+
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header card-no-border pb-0">
+                  </div>
+                  <div class="card-body basic-form">
+                    <form class="theme-form row g-3" method="post" enctype="multipart/form-data">
+
+                      {% csrf_token %}
+          
+                  
+                
+                      <div class="col-sm-3">
+                        <label class="form-label">Title</label>
+                      </div>
+                      <div class="col-sm-9">
+                        <input class="form-control" type="text" maxlength="50" value="" name = "title" required>
+                      </div>
+                      
+                
+          
+              
+                      <div class="col-sm-3">
+                        <label class="form-label">File</label>
+                      </div>
+                      <div class="col-sm-9">
+                        <input class="form-control" type="file" name = "file" required>
+                      </div>
+                 
+              
+             
+
+
+                      <div class="text-center">
+                        <button class="btn btn-primary btn-air-light me-2" type="submit">Submit</button>
+                      </div>
+
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
+            </div>
+          </div>
+        </div>
+
+
+
+{% endblock %}
+    
