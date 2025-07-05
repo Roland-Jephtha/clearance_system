@@ -18,7 +18,8 @@ from .views import (
     send_review,
     statement_result_list,
     statement_result_detail,
-    send_announcement
+    send_announcement,
+    view_clearance_detail
 )
 
 
@@ -47,6 +48,7 @@ urlpatterns = [
     path('send-review/<int:doc_id>/', send_review, name='send_review'),
     path('statements/', statement_result_list, name='statement_list'),
     path('announcement/', send_announcement, name='send_announcement'),
+    path('clearance/<str:department>/', view_clearance_detail, name='view_clearance_detail'),
     path('statements/', statement_result_list, name='statement_list'),
     path('statements/<int:pk>/view/', statement_result_detail, name='statement_detail'),
 

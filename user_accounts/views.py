@@ -114,8 +114,286 @@ def attach_signature(doc, profile):
 def dashboard(request):
     if request.user.position == "student":
         profile = Student.objects.get(user = request.user)
-      
-        return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
+
+        # Get student's documents and clearance status
+        documents = Document.objects.filter(student=profile)
+
+        # Get actual staff members for each department with their images
+        hod_staff = None
+        hod_name = "No HOD Assigned"
+        hod_image = None
+        try:
+            # Get HOD from student's department
+            hod_staff = Hod.objects.get(department=profile.department)
+            hod_name = hod_staff.user.username
+            hod_image = hod_staff.image.url if hod_staff.image else None
+        except Hod.DoesNotExist:
+            pass
+
+        sug_staff = None
+        sug_name = "No SUG President"
+        sug_image = None
+        try:
+            sug_staff = Sug.objects.first()  # Assuming one SUG president
+            if sug_staff:
+                sug_name = sug_staff.user.username
+                sug_image = sug_staff.image.url if sug_staff.image else None
+        except:
+            pass
+
+        library_staff = None
+        library_name = "No Library Officer"
+        library_image = None
+        try:
+            library_staff = Library.objects.first()
+            if library_staff:
+                library_name = library_staff.user.username
+                library_image = library_staff.image.url if library_staff.image else None
+        except:
+            pass
+
+        sport_staff = None
+        sport_name = "No Sport Director"
+        sport_image = None
+        try:
+            sport_staff = Sport_director.objects.first()
+            if sport_staff:
+                sport_name = sport_staff.user.username
+                sport_image = sport_staff.image.url if sport_staff.image else None
+        except:
+            pass
+
+        student_affair_staff = None
+        student_affair_name = "No Student Affairs Officer"
+        student_affair_image = None
+        try:
+            student_affair_staff = Student_affair.objects.first()
+            if student_affair_staff:
+                student_affair_name = student_affair_staff.user.username
+                student_affair_image = student_affair_staff.image.url if student_affair_staff.image else None
+        except:
+            pass
+
+        exam_staff = None
+        exam_name = "No Exam Officer"
+        exam_image = None
+        try:
+            exam_staff = Exam_and_record.objects.first()
+            if exam_staff:
+                exam_name = exam_staff.user.username
+                exam_image = exam_staff.image.url if exam_staff.image else None
+        except:
+            pass
+
+        hostel_staff = None
+        hostel_name = "No Hostel Officer"
+        hostel_image = None
+        try:
+            hostel_staff = Hostel.objects.first()
+            if hostel_staff:
+                hostel_name = hostel_staff.user.username
+                hostel_image = hostel_staff.image.url if hostel_staff.image else None
+        except:
+            pass
+
+        # Create clearance status data for each department
+        clearance_data = {
+            'hod': {
+                'name': 'Head of Department',
+                'staff_name': hod_name,
+                'image': hod_image,
+                'default_image': 'images/hod.jpg',
+                'status': 'pending',
+                'approved': False,
+                'documents': [],
+                'feedback': []
+            },
+            'sug': {
+                'name': 'SUG President',
+                'staff_name': sug_name,
+                'image': sug_image,
+                'default_image': 'images/sug.jpg',
+                'status': 'pending',
+                'approved': False,
+                'documents': [],
+                'feedback': []
+            },
+            'library': {
+                'name': 'Library Officer',
+                'staff_name': library_name,
+                'image': library_image,
+                'default_image': 'images/library.jpg',
+                'status': 'pending',
+                'approved': False,
+                'documents': [],
+                'feedback': []
+            },
+            'sport_director': {
+                'name': 'Sport Director',
+                'staff_name': sport_name,
+                'image': sport_image,
+                'default_image': 'images/sport.jpg',
+                'status': 'pending',
+                'approved': False,
+                'documents': [],
+                'feedback': []
+            },
+            'student_affair': {
+                'name': 'Student Affairs',
+                'staff_name': student_affair_name,
+                'image': student_affair_image,
+                'default_image': 'images/student_affairs.jpg',
+                'status': 'pending',
+                'approved': False,
+                'documents': [],
+                'feedback': []
+            },
+            'exam_record': {
+                'name': 'Exam & Records',
+                'staff_name': exam_name,
+                'image': exam_image,
+                'default_image': 'images/exam.jpg',
+                'status': 'pending',
+                'approved': False,
+                'documents': [],
+                'feedback': []
+            },
+            'hostel': {
+                'name': 'Hostel Officer',
+                'staff_name': hostel_name,
+                'image': hostel_image,
+                'default_image': 'images/hostel.jpg',
+                'status': 'pending',
+                'approved': False,
+                'documents': [],
+                'feedback': []
+            }
+        }
+
+        # Update clearance data based on actual document approvals
+        # First, collect all document statuses for each department
+        for doc in documents:
+            # HOD
+            clearance_data['hod']['documents'].append({
+                'title': doc.title,
+                'approved': doc.hod_approved,
+                'approved_by': doc.hod_approved_by.username if doc.hod_approved_by else None
+            })
+
+            # SUG
+            clearance_data['sug']['documents'].append({
+                'title': doc.title,
+                'approved': doc.sug_approved,
+                'approved_by': doc.sug_approved_by.username if doc.sug_approved_by else None
+            })
+
+            # Library
+            clearance_data['library']['documents'].append({
+                'title': doc.title,
+                'approved': doc.library_approved,
+                'approved_by': doc.library_approved_by.username if doc.library_approved_by else None
+            })
+
+            # Sport Director
+            clearance_data['sport_director']['documents'].append({
+                'title': doc.title,
+                'approved': doc.sport_director_approved,
+                'approved_by': doc.sport_director_approved_by.username if doc.sport_director_approved_by else None
+            })
+
+            # Student Affairs
+            clearance_data['student_affair']['documents'].append({
+                'title': doc.title,
+                'approved': doc.student_affair_approved,
+                'approved_by': doc.student_affair_approved_by.username if doc.student_affair_approved_by else None
+            })
+
+            # Exam & Records
+            clearance_data['exam_record']['documents'].append({
+                'title': doc.title,
+                'approved': doc.Exam_and_record_approved,
+                'approved_by': doc.Exam_and_record_approved_by.username if doc.Exam_and_record_approved_by else None
+            })
+
+            # Hostel
+            clearance_data['hostel']['documents'].append({
+                'title': doc.title,
+                'approved': doc.hostel_approved,
+                'approved_by': doc.hostel_approved_by.username if doc.hostel_approved_by else None
+            })
+
+        # Now determine overall approval status for each department
+        # A department is only approved if ALL documents are approved
+        for dept_key, dept_data in clearance_data.items():
+            if dept_data['documents']:
+                all_approved = all(doc['approved'] for doc in dept_data['documents'])
+                if all_approved:
+                    dept_data['status'] = 'approved'
+                    dept_data['approved'] = True
+                else:
+                    dept_data['status'] = 'pending'
+                    dept_data['approved'] = False
+            else:
+                dept_data['status'] = 'no_documents'
+                dept_data['approved'] = False
+
+        # Get feedback/reviews for each department
+        for doc in documents:
+            reviews = Review.objects.filter(document=doc, student=request.user)
+            for review in reviews:
+                reviewer_position = getattr(review.reviewer, 'position', None)
+                if reviewer_position == 'hod':
+                    clearance_data['hod']['feedback'].append({
+                        'message': review.message,
+                        'date': review.created_at,
+                        'reviewer': review.reviewer.username
+                    })
+                elif reviewer_position == 'sug':
+                    clearance_data['sug']['feedback'].append({
+                        'message': review.message,
+                        'date': review.created_at,
+                        'reviewer': review.reviewer.username
+                    })
+                elif reviewer_position == 'library':
+                    clearance_data['library']['feedback'].append({
+                        'message': review.message,
+                        'date': review.created_at,
+                        'reviewer': review.reviewer.username
+                    })
+                elif reviewer_position == 'sport_director':
+                    clearance_data['sport_director']['feedback'].append({
+                        'message': review.message,
+                        'date': review.created_at,
+                        'reviewer': review.reviewer.username
+                    })
+                elif reviewer_position == 'student_affair':
+                    clearance_data['student_affair']['feedback'].append({
+                        'message': review.message,
+                        'date': review.created_at,
+                        'reviewer': review.reviewer.username
+                    })
+                elif reviewer_position == 'exams_records':
+                    clearance_data['exam_record']['feedback'].append({
+                        'message': review.message,
+                        'date': review.created_at,
+                        'reviewer': review.reviewer.username
+                    })
+                elif reviewer_position == 'hostel':
+                    clearance_data['hostel']['feedback'].append({
+                        'message': review.message,
+                        'date': review.created_at,
+                        'reviewer': review.reviewer.username
+                    })
+
+        # Determine overall clearance status
+        overall_status = profile.overall_clearance_status
+
+        return render(request, 'dashboard/dashboard.html', context = {
+            "profile": profile,
+            "clearance_data": clearance_data,
+            "overall_status": overall_status,
+            "documents": documents
+        })
     
 
     
@@ -178,22 +456,68 @@ def register(request):
 
 def upload_doc(request):
 
+
+
     if request.method == 'POST':
-        title = request.POST['title']
+        title_id = request.POST['title']
         file = request.FILES['file']
         student = Student.objects.get(user=request.user)
+        from .models import DocTitle, CustomUser, Hod
+        try:
+            doc_title = DocTitle.objects.get(id=title_id)
+        except DocTitle.DoesNotExist:
+            messages.error(request, "Invalid document title selected.")
+            return redirect('upload_doc')
 
         document = Document(
-            title = title,
-            file = file,
-            student = student
+            title=doc_title,
+            file=file,
+            student=student
         )
-
         document.save()
+
+        # Email notification to HOD of student's department and all other staff (excluding students)
+        from django.conf import settings
+        from django.apps import apps
+        User = settings.AUTH_USER_MODEL
+        UserModel = apps.get_model(*User.split('.'))
+
+        # Get HOD for student's department
+        hod_email = None
+        try:
+            hod = Hod.objects.get(department=student.department)
+            if hod.user.email:
+                hod_email = hod.user.email
+        except Hod.DoesNotExist:
+            hod_email = None
+
+        # Get all other staff emails (excluding students and HODs)
+        staff_emails = list(UserModel.objects.exclude(position__in=['student', 'hod']).values_list('email', flat=True))
+
+        # Compose recipient list: HOD (if exists) + other staff
+        recipient_emails = []
+        if hod_email:
+            recipient_emails.append(hod_email)
+        recipient_emails.extend([email for email in staff_emails if email])
+
+        if recipient_emails:
+            from django.core.mail import send_mail
+            subject = 'New Document Uploaded'
+            message = f'A new document titled "{doc_title.title}" has been uploaded by {student.user.username}.'
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                recipient_emails,
+                fail_silently=True
+            )
+
         messages.success(request, "Document Uploaded Successfully ")
         return redirect('upload_doc')
 
-    return render(request, 'dashboard/upload_doc.html')
+    from .models import DocTitle
+    doc_titles = DocTitle.objects.all()
+    return render(request, 'dashboard/upload_doc.html', {'doc_titles': doc_titles})
 
 
 
@@ -614,6 +938,127 @@ def create_statement_of_result(request, student_id):
 
 
 
+
+
+@login_required(login_url="login")
+def view_clearance_detail(request, department):
+    """View detailed clearance information for a specific department"""
+    if request.user.position != "student":
+        messages.error(request, "Access denied.")
+        return redirect('dashboard')
+
+    profile = Student.objects.get(user=request.user)
+    documents = Document.objects.filter(student=profile)
+
+    # Department mapping
+    dept_mapping = {
+        'hod': {
+            'name': 'Head of Department',
+            'staff_name': 'Dr. Alice Johnson',
+            'field': 'hod_approved',
+            'approved_by_field': 'hod_approved_by',
+            'position': 'hod'
+        },
+        'sug': {
+            'name': 'SUG President',
+            'staff_name': 'Michael Okon',
+            'field': 'sug_approved',
+            'approved_by_field': 'sug_approved_by',
+            'position': 'sug'
+        },
+        'library': {
+            'name': 'Library Officer',
+            'staff_name': 'Mrs. Grace Edet',
+            'field': 'library_approved',
+            'approved_by_field': 'library_approved_by',
+            'position': 'library'
+        },
+        'sport_director': {
+            'name': 'Sport Director',
+            'staff_name': 'Samuel Nwosu',
+            'field': 'sport_director_approved',
+            'approved_by_field': 'sport_director_approved_by',
+            'position': 'sport_director'
+        },
+        'student_affair': {
+            'name': 'Student Affairs',
+            'staff_name': 'Blessing Chika',
+            'field': 'student_affair_approved',
+            'approved_by_field': 'student_affair_approved_by',
+            'position': 'student_affair'
+        },
+        'exam_record': {
+            'name': 'Exam & Records',
+            'staff_name': 'Mrs. Rita Akpan',
+            'field': 'Exam_and_record_approved',
+            'approved_by_field': 'Exam_and_record_approved_by',
+            'position': 'exams_records'
+        },
+        'hostel': {
+            'name': 'Hostel Officer',
+            'staff_name': 'Emmanuel Bassey',
+            'field': 'hostel_approved',
+            'approved_by_field': 'hostel_approved_by',
+            'position': 'hostel'
+        }
+    }
+
+    if department not in dept_mapping:
+        messages.error(request, "Invalid department.")
+        return redirect('dashboard')
+
+    dept_info = dept_mapping[department]
+
+    # Get document status for this department
+    document_status = []
+    for doc in documents:
+        approved = getattr(doc, dept_info['field'])
+        document_status.append({
+            'title': doc.title,
+            'approved': approved,
+            'file': doc.file,
+            'id': doc.id
+        })
+
+    # Get feedback for this department
+    feedback_list = []
+    for doc in documents:
+        reviews = Review.objects.filter(
+            document=doc,
+            student=request.user,
+            reviewer__position=dept_info['position']
+        ).order_by('-created_at')
+
+        for review in reviews:
+            feedback_list.append({
+                'message': review.message,
+                'date': review.created_at,
+                'reviewer': review.reviewer.username,
+                'document_title': doc.title
+            })
+
+    # Determine overall status for this department
+    # Only approved if ALL documents are approved
+    all_approved = all(getattr(doc, dept_info['field']) for doc in documents) if documents else False
+    has_documents = documents.exists()
+
+    if not has_documents:
+        dept_status = 'no_documents'
+    elif all_approved:
+        dept_status = 'approved'
+    else:
+        dept_status = 'pending'
+
+    context = {
+        'department': department,
+        'dept_info': dept_info,
+        'document_status': document_status,
+        'feedback_list': feedback_list,
+        'dept_status': dept_status,
+        'profile': profile
+    }
+
+    return render(request, 'dashboard/clearance_detail.html', context)
 
 
 def send_review(request, doc_id):

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
+from django.db import models
+from django.conf import settings
 
 
 
@@ -82,13 +84,30 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.user.username}"
+    
+
+
+
+class DocTitle(models.Model):
+    title = models.CharField(max_length = 255, null = True)
+
+
+    def __str__(self):
+        return self.title
+
+
+
+
+
+
+
 
 
 
 class Document(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
     file = models.FileField(upload_to='school_fee_receipts/', null=True)
-    title = models.CharField(max_length=100, null=True)
+    title = models.ForeignKey('DocTitle', on_delete = models.CASCADE, null = True, blank = True)
     # Approval fields
     hod_approved = models.BooleanField(default=False)
     sug_approved = models.BooleanField(default=False)
@@ -199,17 +218,6 @@ class Exam_and_record(models.Model):
 
 
 
-
-
-
-
-
-
-
-
-
-from django.db import models
-from django.conf import settings
 
 # Choices for grade
 GRADE_CHOICES = [

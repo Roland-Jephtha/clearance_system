@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="page-body">
+  <div class="container-fluid">
+    <div class="page-title">
+      <div class="row">
+        <div class="col-sm-6 col-12">
+          <h2>{{ dept_info.name }} Clearance</h2>
+          <p class="mb-0 text-title-gray">Review your clearance status and feedback from {{ dept_info.staff_name }}</p>
+        </div>
+        <div class="col-sm-6 col-12">
+          <div class="text-end">
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Overall Status Card -->
+      <div class="col-12 mb-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center py-4">
+            {% if dept_status == 'approved' %}
+              <div class="text-success mb-3">
+                <i class="fas fa-check-circle fa-3x"></i>
+              </div>
+              <h3 class="text-success mb-2">Clearance Approved!</h3>
+              <p class="text-muted">{{ dept_info.staff_name }} has approved all your documents for {{ dept_info.name }}.</p>
+            {% elif dept_status == 'pending' %}
+              <div class="text-warning mb-3">
+                <i class="fas fa-clock fa-3x"></i>
+              </div>
+              <h3 class="text-warning mb-2">Clearance Pending</h3>
+              <p class="text-muted">{{ dept_info.staff_name }} is still reviewing your documents. Please check back later.</p>
+            {% else %}
+              <div class="text-info mb-3">
+                <i class="fas fa-upload fa-3x"></i>
+              </div>
+              <h3 class="text-info mb-2">No Documents Uploaded</h3>
+              <p class="text-muted">Please upload your documents to begin the clearance process.</p>
+              <a href="{% url 'upload_doc' %}" class="btn btn-primary">Upload Documents</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents Status -->
+      <div class="col-lg-8 col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-file-alt"></i> Document Status</h5>
+          </div>
+          <div class="card-body">
+            {% if document_status %}
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Document</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for doc in document_status %}
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <i class="fas fa-file-pdf text-danger me-2"></i>
+                          <span>{{ doc.title }}</span>
+                        </div>
+                      </td>
+                      <td>
+                        {% if doc.approved %}
+                          <span class="badge bg-success">
+                            <i class="fas fa-check"></i> Approved
+                          </span>
+                        {% else %}
+                          <span class="badge bg-warning">
+                            <i class="fas fa-clock"></i> Disapproved
+                          </span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if doc.file %}
+                          <a href="{{ doc.file.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i> View
+                          </a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <div class="text-center py-4">
+                <i class="fas fa-file-upload fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No Documents Found</h5>
+                <p class="text-muted">You haven't uploaded any documents yet.</p>
+                <a href="{% url 'upload_doc' %}" class="btn btn-primary">
+                  <i class="fas fa-upload"></i> Upload Documents
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Section -->
+      <div class="col-lg-4 col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-comments"></i> Feedback & Comments</h5>
+          </div>
+          <div class="card-body">
+            {% if feedback_list %}
+              <div class="feedback-list" style="max-height: 400px; overflow-y: auto;">
+                {% for feedback in feedback_list %}
+                <div class="feedback-item mb-3 p-3 border rounded">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <small class="text-primary fw-bold">{{ feedback.reviewer }}</small>
+                    <small class="text-muted">{{ feedback.date|date:"M d, Y H:i" }}</small>
+                  </div>
+                  <p class="mb-1">{{ feedback.message }}</p>
+                  <small class="text-muted">
+                    <i class="fas fa-file"></i> {{ feedback.document_title }}
+                  </small>
+                </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="text-center py-4">
+                <i class="fas fa-comment-slash fa-3x text-muted mb-3"></i>
+                <h6 class="text-muted">No Feedback Yet</h6>
+                <p class="text-muted small">{{ dept_info.staff_name }} hasn't provided any feedback on your documents.</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5><i class="fas fa-tools"></i> Quick Actions</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 col-6 mb-3">
+                <a href="{% url 'upload_doc' %}" class="btn btn-outline-primary w-100">
+                  <i class="fas fa-upload d-block mb-2"></i>
+                  Upload Documents
+                </a>
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <a href="{% url 'my_doc' %}" class="btn btn-outline-info w-100">
+                  <i class="fas fa-folder d-block mb-2"></i>
+                  My Documents
+                </a>
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary w-100">
+                  <i class="fas fa-tachometer-alt d-block mb-2"></i>
+                  Dashboard
+                </a>
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <button class="btn btn-outline-success w-100" onclick="window.print()">
+                  <i class="fas fa-print d-block mb-2"></i>
+                  Print Status
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.feedback-item {
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.feedback-item:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+@media print {
+  .btn, .card-header, .quick-actions {
+    display: none !important;
+  }
+  
+  .card {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+}
+</style>
+{% endblock %}

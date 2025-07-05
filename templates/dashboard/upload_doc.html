@@ -42,22 +42,86 @@
           
                   
                 
+
                       <div class="col-sm-3">
                         <label class="form-label">Title</label>
                       </div>
                       <div class="col-sm-9">
-                        <input class="form-control" type="text" maxlength="50" value="" name = "title" required>
+                        <select class="form-control" name="title" required>
+                          <option value="" disabled selected>Select Document Title</option>
+                          {% for doctitle in doc_titles %}
+                            <option value="{{ doctitle.id }}">{{ doctitle.title }}</option>
+                          {% endfor %}
+                        </select>
                       </div>
                       
                 
           
               
+
                       <div class="col-sm-3">
                         <label class="form-label">File</label>
                       </div>
                       <div class="col-sm-9">
-                        <input class="form-control" type="file" name = "file" required>
+                        <div id="drop-zone" class="drop-zone">
+                          <input class="form-control drop-zone__input" type="file" name="file" id="fileInput" required style="display:none;">
+                          <div class="drop-zone__prompt">Drag & drop file here or click to select</div>
+                        </div>
                       </div>
+<style>
+  .drop-zone {
+    border: 2px dashed #007bff;
+    border-radius: 6px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    background: #f8f9fa;
+    transition: border-color 0.2s;
+  }
+  .drop-zone.dragover {
+    border-color: #0056b3;
+    background: #e9ecef;
+  }
+  .drop-zone__prompt {
+    color: #6c757d;
+    font-size: 1.1em;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var dropZone = document.getElementById('drop-zone');
+    var fileInput = document.getElementById('fileInput');
+    var prompt = dropZone.querySelector('.drop-zone__prompt');
+
+    dropZone.addEventListener('click', function() {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length) {
+        prompt.textContent = fileInput.files[0].name;
+      } else {
+        prompt.textContent = 'Drag & drop file here or click to select';
+      }
+    });
+
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', function(e) {
+      dropZone.classList.remove('dragover');
+    });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        prompt.textContent = e.dataTransfer.files[0].name;
+      }
+    });
+  });
+</script>
                  
               
              

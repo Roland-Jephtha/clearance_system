@@ -252,7 +252,8 @@
     animation-direction: var(--fa-animation-direction, normal);
   }
   .fa-spin {
-    -webkit-animation-name: fa-spin;
+    /* Spinning animation disabled */
+    /* -webkit-animation-name: fa-spin;
     animation-name: fa-spin;
     -webkit-animation-duration: var(--fa-animation-duration, 2s);
     animation-duration: var(--fa-animation-duration, 2s);
@@ -262,7 +263,7 @@
     );
     animation-iteration-count: var(--fa-animation-iteration-count, infinite);
     -webkit-animation-timing-function: var(--fa-animation-timing, linear);
-    animation-timing-function: var(--fa-animation-timing, linear);
+    animation-timing-function: var(--fa-animation-timing, linear); */
   }
   .fa-spin-reverse {
     --fa-animation-direction: reverse;
@@ -3603,7 +3604,8 @@
   }
   .fa-cog:before,
   .fa-gear:before {
-    content: "\f013";
+    /* content: "\f013"; */ /* DISABLED - Icon removed */
+    display: none !important;
   }
   .fa-droplet-slash:before,
   .fa-tint-slash:before {
@@ -4700,7 +4702,8 @@
   }
   .fa-cogs:before,
   .fa-gears:before {
-    content: "\f085";
+    /* content: "\f085"; */ /* DISABLED - Icon removed */
+    display: none !important;
   }
   .fa-warehouse:before {
     content: "\f494";

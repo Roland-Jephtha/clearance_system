@@ -36,6 +36,64 @@
     <!-- App css -->
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"/>
     <link id="color" rel="stylesheet" href="{% static 'assets/css/color-1.css' %}" media="screen"/>
+    <style>
+      /* Hide the green floating settings button (theme customizer) */
+      .customizer-btn,
+      .theme-customizer,
+      .customizer-wrapper,
+      .customizer-body,
+      .customizer-header,
+      .customizer-contain,
+      .customizer-footer,
+      .customizer-links,
+      .customizer-color,
+      .customizer-bg,
+      .customizer-icon,
+      .customizer-sidebar,
+      .customizer-section,
+      .customizer-tab,
+      .customizer-tab-content,
+      .customizer-tab-pane,
+      .customizer-tab-header,
+      .customizer-tab-footer,
+      .customizer-tab-links,
+      .customizer-tab-link,
+      .customizer-tab-icon,
+      .customizer-tab-sidebar,
+      .customizer-tab-section,
+      .customizer-tab-bg,
+      .customizer-tab-color,
+      .customizer-tab-header,
+      .customizer-tab-footer,
+      .customizer-tab-links,
+      .customizer-tab-link,
+      .customizer-tab-icon,
+      .customizer-tab-sidebar,
+      .customizer-tab-section,
+      .customizer-tab-bg,
+      .customizer-tab-color,
+      .customizer-btn,
+      .customizer-btn:focus,
+      .customizer-btn:active,
+      .customizer-btn:visited,
+      .customizer-btn:focus-visible,
+      .customizer-btn:focus-within {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+      /* Hide the green floating button by id or class if present */
+      #customizer-btn,
+      #theme-customizer,
+      #customizer,
+      .customizer-btn {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+    </style>
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -142,7 +200,141 @@
         </header>
         
         <!-- FontAwesome CDN -->
-        
+
+        <!-- Global CSS to completely remove settings/gear functionality -->
+        <style>
+            /* Completely remove all gear/cog/settings icons and their containers */
+            .fa-cog,
+            .fa-gear,
+            .fa-settings,
+            .icon-settings,
+            .fa-cogs,
+            .fa-gears,
+            i.fa-cog,
+            i.fa-gear,
+            i.fa-settings,
+            i.icon-settings,
+            i.fa-cogs,
+            i.fa-gears,
+            [class*="fa-cog"],
+            [class*="fa-gear"],
+            [class*="fa-settings"],
+            [class*="icon-settings"],
+            /* Remove parent containers */
+            .settings-container,
+            .gear-container,
+            .config-container,
+            .settings-wrapper,
+            .gear-wrapper,
+            .settings-menu,
+            .gear-menu,
+            .settings-dropdown,
+            .gear-dropdown,
+            /* Remove buttons and links */
+            .settings-btn,
+            .gear-btn,
+            .config-btn,
+            .settings-button,
+            .gear-button,
+            .config-button,
+            /* Remove any div containing only settings icons */
+            div:has(> .fa-cog:only-child),
+            div:has(> .fa-gear:only-child),
+            div:has(> .fa-settings:only-child),
+            li:has(> .fa-cog),
+            li:has(> .fa-gear),
+            li:has(> .fa-settings),
+            button:has(.fa-cog),
+            button:has(.fa-gear),
+            button:has(.fa-settings),
+            a:has(.fa-cog),
+            a:has(.fa-gear),
+            a:has(.fa-settings),
+            /* Remove any element with settings in class name */
+            [class*="settings"],
+            [class*="gear"],
+            [class*="config"] {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                width: 0 !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                pointer-events: none !important;
+                user-select: none !important;
+                content: "" !important;
+            }
+
+            /* Disable any JavaScript functionality for settings */
+            .settings-toggle,
+            .gear-toggle,
+            .config-toggle {
+                pointer-events: none !important;
+                cursor: default !important;
+            }
+        </style>
+
+        <!-- JavaScript to completely disable settings functionality -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Remove all gear/cog/settings icons and their containers
+                function removeSettingsElements() {
+                    const selectors = [
+                        '.fa-cog', '.fa-gear', '.fa-settings', '.icon-settings',
+                        '.fa-cogs', '.fa-gears', '[class*="fa-cog"]', '[class*="fa-gear"]',
+                        '[class*="fa-settings"]', '[class*="icon-settings"]',
+                        '.settings-container', '.gear-container', '.config-container',
+                        '.settings-wrapper', '.gear-wrapper', '.settings-menu',
+                        '.gear-menu', '.settings-dropdown', '.gear-dropdown',
+                        '.settings-btn', '.gear-btn', '.config-btn',
+                        '.settings-button', '.gear-button', '.config-button'
+                    ];
+
+                    selectors.forEach(selector => {
+                        const elements = document.querySelectorAll(selector);
+                        elements.forEach(element => {
+                            element.remove();
+                        });
+                    });
+                }
+
+                // Run immediately and also observe for dynamically added elements
+                removeSettingsElements();
+
+                // Use MutationObserver to catch dynamically added settings elements
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList') {
+                            removeSettingsElements();
+                        }
+                    });
+                });
+
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+
+                // Disable any click events on settings-related elements
+                document.addEventListener('click', function(e) {
+                    const target = e.target;
+                    if (target.classList.contains('fa-cog') ||
+                        target.classList.contains('fa-gear') ||
+                        target.classList.contains('fa-settings') ||
+                        target.classList.contains('icon-settings') ||
+                        target.closest('.settings-menu') ||
+                        target.closest('.gear-menu') ||
+                        target.closest('.config-menu')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
+                }, true);
+            });
+        </script>
+
       <!-- Page Body Start-->
 
 
@@ -276,8 +468,7 @@
 
         
             
-            
-            <li class="sidebar-list"> <a class="sidebar-link" href="#">
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'send_announcement' %}">
               <i class="fas fa-users"></i>
               
               <h6 class="f-w-600">Anouncements </h6></a>
@@ -320,7 +511,10 @@
         </aside>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>                    
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>         
+        
+        
+        
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -427,8 +621,8 @@
 <script src="{% static 'assets/js/js-datatables/datatables/datatable.custom1.js' %}"></script>
 <!-- page_datatable -->
 <script src="{% static 'assets/js/datatable/datatables/datatable.custom.js' %}"></script>
-<!-- theme_customizer -->
-<script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script>
+<!-- theme_customizer (REMOVED to disable floating settings button) -->
+<!-- <script src="{% static 'assets/js/theme-customizer/customizer.js' %}"></script> -->
 <!-- dashboard_3 -->
 <script src="{% static 'assets/js/dashboard/dashboard_3.js' %}"></script>
 <!-- echart_pie -->
