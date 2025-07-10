@@ -260,6 +260,9 @@
     </style>
 </head>
 <body>
+
+
+    {% if statement %}
     <button class="print-button" onclick="window.print()">Print Document</button>
     
     <div class="document">
@@ -355,6 +358,15 @@
                 <button class="btn btn-primary" onclick="window.print()">Print Statement</button>
         </div>
               <!-- End Statement of Result -->
+        
+
+              {% else %}
+                    <br>
+                    <br>
+              <center>
+                <h3> Statement of Result has not been generated</h3>
+              </center>
+            {% endif %}
 </body>
 </html>
 {% endblock %}

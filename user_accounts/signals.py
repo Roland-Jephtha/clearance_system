@@ -5,8 +5,13 @@ from .models import CustomUser, Student, Hod, Sug, Sport_director, Library, Host
 @receiver(post_save, sender=CustomUser)
 def create_position_instance(sender, instance, created, **kwargs):
     if created:  # Ensure this runs only when a new user is created
+        # Check if this is from admin creation (has a flag) or registration
+        # Skip signal for registration (when _skip_signal is set)
+        if getattr(instance, '_skip_signal', False):
+            return
+
         position = instance.position.lower()
-        
+
         if position == "student":
             Student.objects.create(user=instance)
         elif position == "sug":

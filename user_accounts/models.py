@@ -54,6 +54,10 @@ class Department(models.Model):
         return self.title
     
 
+
+
+    
+
 class Level(models.Model):
     title = models.CharField(max_length=100, unique=True, null=True)
     created = models.DateTimeField(auto_now_add=True)

@@ -1,0 +1,98 @@
+{% extends 'auth/modern_base.html' %}
+{% block title %}Login - Student Clearance System{% endblock %}
+
+{% load static %}
+{% block content %}
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+
+
+            <img src="{% static 'assets/images/pti_logo.png' %}" alt="PTI Logo" class="d-inline-block align-text-top" style = "">
+            PTI Clearance
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary ms-2" href="{% url 'register' %}">Apply</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1><i class="fas fa-graduation-cap me-2"></i>Student Clearance</h1>
+            <p>Sign in to your account</p>
+        </div>
+        
+        <div class="auth-body">
+            <!-- Display Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        <i class="fas fa-info-circle me-2"></i>{{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user me-2"></i>Email or Matric Number
+                    </label>
+                    <input class="form-control" type="text" name="email" required 
+                           placeholder="your.email@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock me-2"></i>Password
+                    </label>
+                    <div class="position-relative">
+                        <input class="form-control" type="password" name="password" required 
+                               placeholder="Enter your password">
+                        <button type="button" class="password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                {% comment %} <div class="form-group">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="remember">
+                            <label class="form-check-label" for="remember">
+                                Remember me
+                            </label>
+                        </div>
+                        <a href="#" class="text-decoration-none">Forgot password?</a>
+                    </div>
+                </div> {% endcomment %}
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                </button>
+            </form>
+        </div>
+        
+        <div class="auth-footer">
+            <p>Are you a new Student ? <a href="{% url 'register' %}">Apply as a Student</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

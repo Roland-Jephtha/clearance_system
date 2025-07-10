@@ -2,6 +2,9 @@ from django.urls import path
 from .views import (
     register,
     login,
+    modern_login,
+    modern_register,
+    debug_register,
     dashboard,
     upload_doc,
     my_doc,
@@ -27,8 +30,11 @@ from .views import (
 
 urlpatterns = [
     path('', register, name='register_root'), # For root of /user/
-    path('register/', register, name='register'),
-    path('login/', login, name='login'),
+    path('register/', modern_register, name='register'),  # Use modern register
+    path('login/', modern_login, name='login'),  # Use modern login
+    path('debug/', debug_register, name='debug_register'),  # Debug registration
+    path('old-register/', register, name='old_register'),  # Keep old register as backup
+    path('old-login/', login, name='old_login'),  # Keep old login as backup
     path('dashboard/', dashboard, name='dashboard'),
     
     path('upload-doc/', upload_doc, name='upload_doc'),

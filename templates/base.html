@@ -93,6 +93,57 @@
         opacity: 0 !important;
         pointer-events: none !important;
       }
+
+      /* Fix hamburger menu visibility on white background */
+      .toggle-sidebar,
+      .close-btn {
+        color: #374151 !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0.5rem !important;
+        margin-left: 1rem !important;
+        border-radius: 0.375rem !important;
+        transition: all 0.2s ease !important;
+        font-size: 1.2rem !important;
+      }
+
+      .toggle-sidebar:hover,
+      .close-btn:hover {
+        background: #f3f4f6 !important;
+        color: #667eea !important;
+      }
+
+      .toggle-sidebar i,
+      .close-btn i {
+        color: inherit !important;
+        font-size: 1.2rem !important;
+      }
+
+      /* Header styling for white background */
+      .page-header {
+        background: #ffffff !important;
+        border-bottom: 1px solid #e5e7eb !important;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+        padding: 0.75rem 1.5rem !important;
+      }
+
+      .logo-wrapper {
+        background: transparent !important;
+        border: none !important;
+        padding: 0.5rem 0 !important;
+      }
+
+      /* Make sure all header elements are visible */
+      .page-header * {
+        color: #374151 !important;
+      }
+
+      .page-header .fas,
+      .page-header .fa,
+      .page-header i {
+        color: #374151 !important;
+      }
+
     </style>
 
 
@@ -111,11 +162,11 @@
     </div>
     <div class="page-wrapper compact-wrapper" id="pageWrapper"> 
         <header class="page-header row">
-            <div class="logo-wrapper d-flex align-items-center col-auto">
-                <a href="index-2.html">
+            <div class="logo-wrapper d-flex align-items-center col-auto" style="background-color: white;">
+                <a href="">
 
-                    <img class="light-logo img-fluid" src="{% static 'assets/images/pti.png' %}" alt="logo" style="width: 4em;"/>
-                    <img class="dark-logo img-fluid" src="{% static 'assets/images/pti.png' %}" alt="logo" style="width: 4em;" />
+                    <img class="light-logo img-fluid" src="{% static 'assets/images/pti.png' %}" alt="logo" style="width: 4em; margin-left: 2em;"/>
+                    <img class="dark-logo img-fluid" src="{% static 'assets/images/pti.png' %}" alt="logo" style="width: 4em; margin-left: 2em;" />
                 </a>
                 <a class="close-btn toggle-sidebar" href="javascript:void(0)">
                     <i class="fas fa-bars"></i>
@@ -352,7 +403,7 @@
 
 
 
-            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'dashboard' %}">
+            <li class="sidebar-list"> <a class="sidebar-link" href="{% url 'dashboard' %}" style="margin-top: 1em;">
                 <i class="fas fa-tachometer-alt"></i>
 
                 <h6 class="f-w-150">Dashboard </h6></a>
@@ -511,6 +562,29 @@
         </aside>
 
 
+
+
+
+
+
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+          {% block content %}
+          {% endblock content %}
+
+
+
+
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>         
         
         
@@ -546,23 +620,6 @@
               {% endif %}
             });
           </script>
-
-
-
-
-
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-          {% block content %}
-          {% endblock content %}
 
 
 

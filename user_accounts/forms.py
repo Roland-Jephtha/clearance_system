@@ -6,14 +6,34 @@ class StudentForm(forms.ModelForm):
         model = Student
         fields = [
             'mat_no', 'department', 'level',
-             'image', 
+             'image',
         'signature'
         ]
-    
+
         widgets = {
             'mat_no': forms.TextInput(attrs={'class': 'form-control'}),
             'department': forms.Select(attrs={'class': 'form-control'}),
             'level': forms.Select(attrs={'class': 'form-control'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'signature': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make these fields not required for profile updates
+        if self.instance and self.instance.pk:
+            self.fields['mat_no'].required = False
+            self.fields['department'].required = False
+            self.fields['level'].required = False
+
+
+class StudentProfileForm(forms.ModelForm):
+    """Separate form for profile updates - only editable fields"""
+    class Meta:
+        model = Student
+        fields = ['image', 'signature']
+
+        widgets = {
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'signature': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }

@@ -1,24 +1,26 @@
 from django.shortcuts import render, redirect
 from .models import (
-Student, 
+Student,
 CustomUser,
- Document, 
- Hod, 
- Hostel,
+Document,
+Hod,
+Hostel,
 Exam_and_record,
-Library, 
-Sport_director, 
+Library,
+Sport_director,
 Student_affair,
 Sug,
 Statement_Result,
-Review
+Review,
+Department,
+Level
 
-) 
+)
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as log, logout
 from django.contrib import messages
-from .forms import StudentForm
+from .forms import StudentForm, StudentProfileForm
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -35,10 +37,11 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 
-from .models import Announcement
+from .models import *
 from .forms import AnnouncementForm
 
 
+from django.urls import reverse
 
 
 
@@ -446,8 +449,278 @@ def dashboard(request):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 def register(request):
-    return render(request, 'auth/register.html')
+    departments = Department.objects.all()
+    levels = Level.objects.values_list('title', flat=True)
+
+    if request.method == 'POST':
+        fullname = request.POST.get('fullname')
+        mat_no = request.POST.get('mat_no')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        department_id = request.POST.get('department')
+        level_title = request.POST.get('level')
+
+        # Basic validation
+        if not all([fullname, mat_no, email, password, department_id, level_title]):
+            messages.error(request, 'Please fill in all fields.')
+            return render(request, 'auth/register.html', {
+                'departments': departments,
+                'levels': levels
+            })
+
+        try:
+            # Check if student with this matric number already exists
+            if Student.objects.filter(mat_no=mat_no).exists():
+                messages.error(request, 'A student with this matric number already exists.')
+                return render(request, 'auth/register.html', {
+                    'departments': departments,
+                    'levels': levels
+                })
+
+            # Check if user with this email already exists
+            if CustomUser.objects.filter(email=email).exists():
+                messages.error(request, 'A user with this email already exists.')
+                return render(request, 'auth/register.html', {
+                    'departments': departments,
+                    'levels': levels
+                })
+
+            # Get department and level objects
+            department = Department.objects.get(id=department_id)
+            level = Level.objects.get(title=level_title)
+
+            # Create unique username
+            import random
+            username_unique = str(mat_no) + "_" + str(random.randint(1000, 9999))
+
+            # Ensure username is truly unique
+            while CustomUser.objects.filter(username=username_unique).exists():
+                username_unique = str(mat_no) + "_" + str(random.randint(1000, 9999))
+
+            # Create user with signal skip flag
+            user = CustomUser(
+                username=username_unique,
+                email=email,
+                first_name=fullname,
+                position='student'
+            )
+            user.set_password(password)
+            user._skip_signal = True  # Skip signal for registration
+            user.save()
+
+            # Manually create student profile with all required fields
+            Student.objects.create(
+                user=user,
+                mat_no=mat_no,
+                department=department,
+                level=level
+            )
+
+            messages.success(request, f'Account created successfully for {fullname}! Please log in with your matric number: {mat_no}')
+            return redirect('login')
+
+        except Exception as e:
+            messages.error(request, 'Registration failed. Please try again.')
+            return render(request, 'auth/register.html', {
+                'departments': departments,
+                'levels': levels
+            })
+
+    return render(request, 'auth/register.html', {
+        'departments': departments,
+        'levels': levels
+    })
+
+
+def index(request):
+    """Landing page view"""
+    return render(request, 'index.html')
+
+
+def debug_register(request):
+    """Debug view to test registration components"""
+    try:
+        departments = Department.objects.all()
+        levels = Level.objects.all()
+
+        context = {
+            'departments_count': departments.count(),
+            'levels_count': levels.count(),
+            'departments': departments,
+            'levels': levels,
+        }
+
+        return render(request, 'debug.html', context)
+    except Exception as e:
+        return render(request, 'debug.html', {'error': str(e)})
+
+
+def modern_login(request):
+    """Modern login view using new template"""
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+
+    if request.method == "POST":
+        email_or_matno = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "")
+
+        if not email_or_matno or not password:
+            messages.error(request, "Please enter both email/matric number and password.")
+            return render(request, 'auth/new_login.html')
+
+        try:
+            # Try to find user by email first
+            if "@" in email_or_matno:
+                customuser = CustomUser.objects.get(email=email_or_matno.lower())
+            else:
+                # Try to find by matric number (check Student model)
+                student = Student.objects.get(mat_no=email_or_matno)
+                customuser = student.user
+
+            # Authenticate with username
+            user = authenticate(username=customuser.username, password=password)
+            if user is not None:
+                log(request, user)
+                messages.success(request, f"Welcome back, {user.first_name}!")
+                return redirect("dashboard")
+            else:
+                messages.error(request, "Invalid password.")
+
+        except (CustomUser.DoesNotExist, Student.DoesNotExist):
+            messages.error(request, "No account found with this email or matric number.")
+        except Exception as e:
+            messages.error(request, "Login failed. Please try again.")
+
+    return render(request, 'auth/new_login.html')
+
+
+def modern_register(request):
+    """Modern register view using new template"""
+    try:
+        departments = Department.objects.all()
+        levels = Level.objects.values_list('title', flat=True)
+    except Exception as e:
+        messages.error(request, f'Database error: {str(e)}')
+        return render(request, 'auth/new_register.html', {
+            'departments': [],
+            'levels': []
+        })
+
+    if request.method == 'POST':
+        fullname = request.POST.get('fullname')
+        mat_no = request.POST.get('mat_no')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        department_id = request.POST.get('department')
+        level_title = request.POST.get('level')
+
+        # Basic validation
+        if not all([fullname, mat_no, email, password, department_id, level_title]):
+            messages.error(request, 'Please fill in all fields.')
+            return render(request, 'auth/new_register.html', {
+                'departments': departments,
+                'levels': levels
+            })
+
+        try:
+            # Check if student with this matric number already exists
+            if Student.objects.filter(mat_no=mat_no).exists():
+                messages.error(request, 'A student with this matric number already exists.')
+                return render(request, 'auth/new_register.html', {
+                    'departments': departments,
+                    'levels': levels
+                })
+
+            # Check if user with this email already exists
+            if CustomUser.objects.filter(email=email).exists():
+                messages.error(request, 'A user with this email already exists.')
+                return render(request, 'auth/new_register.html', {
+                    'departments': departments,
+                    'levels': levels
+                })
+
+            # Get department and level objects
+            department = Department.objects.get(id=department_id)
+            level = Level.objects.get(title=level_title)
+
+            # Create unique username
+            import random
+            username_unique = str(mat_no) + "_" + str(random.randint(1000, 9999))
+
+            # Ensure username is truly unique
+            while CustomUser.objects.filter(username=username_unique).exists():
+                username_unique = str(mat_no) + "_" + str(random.randint(1000, 9999))
+
+            # Create user with signal skip flag
+            user = CustomUser(
+                username=username_unique,
+                email=email,
+                first_name=fullname,
+                position='student'
+            )
+            user.set_password(password)
+            user._skip_signal = True  # Skip signal for registration
+            user.save()
+
+            # Manually create student profile with all required fields
+            Student.objects.create(
+                user=user,
+                mat_no=mat_no,
+                department=department,
+                level=level
+            )
+
+            messages.success(request, f'Account created successfully for {fullname}! Please log in with your matric number: {mat_no}')
+            return redirect('login')
+
+        except Exception as e:
+            # Clean up any created user if student creation failed
+            try:
+                if 'user' in locals():
+                    user.delete()
+            except:
+                pass
+
+            messages.error(request, f'Registration failed: {str(e)}')
+            return render(request, 'auth/new_register.html', {
+                'departments': departments,
+                'levels': levels,
+                'form_data': {
+                    'fullname': fullname,
+                    'mat_no': mat_no,
+                    'email': email,
+                    'department_id': department_id,
+                    'level_title': level_title
+                }
+            })
+
+    return render(request, 'auth/new_register.html', {
+        'departments': departments,
+        'levels': levels
+    })
+
+
+
+
+
+
+
+
+
 
 
 
@@ -455,9 +728,6 @@ def register(request):
 
 
 def upload_doc(request):
-
-
-
     if request.method == 'POST':
         title_id = request.POST['title']
         file = request.FILES['file']
@@ -759,21 +1029,33 @@ def profile(request):
 
 @login_required
 def student_profile(request):
-    student, created = Student.objects.get_or_create(user=request.user)
-    
-    if request.method == 'POST':
-        form = StudentForm(request.POST, request.FILES, instance=student)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Profile updated successfully.')
-            return redirect('student_profile')
+    try:
+        student, created = Student.objects.get_or_create(user=request.user)
+
+        if request.method == 'POST':
+            form = StudentProfileForm(request.POST, request.FILES, instance=student)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Profile updated successfully.')
+                return redirect('student_profile')
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f'{field}: {error}')
+
         else:
-            messages.error(request, 'Please correct the errors below.')
+            form = StudentProfileForm(instance=student)
 
-    else:
-        form = StudentForm(instance=student)
+        return render(request, 'dashboard/student-profile.html', {'form': form, 'profile': student})
 
-    return render(request, 'dashboard/student-profile.html', {'form': form, 'profile': student})
+    except Exception as e:
+        messages.error(request, f'Error loading profile: {str(e)}')
+        return redirect('dashboard')
+
+
+
+
+
 
 
 

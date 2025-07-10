@@ -1,29 +1,21 @@
 
 
 {% extends 'base.html' %}
-
-
 {% load static %}
 
 {% block content %}
+<div class="page-body">
+  <div class="container-fluid">
+    <div class="page-title">
+      <div class="row">
+        <div class="col-sm-6 col-12">
+          <h2>Edit Profile</h2>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>                    
-
-
-
-
-        <div class="page-body">
-          <div class="container-fluid">
-            <div class="page-title">
-              <div class="row">
-                <div class="col-sm-6 col-12"> 
-                  <h2>Edit Profile</h2>
-                </div>
-            
-              </div>
-            </div>
-          </div>
           <!-- Container-fluid starts-->
           <div class="container-fluid">
             <div class="edit-profile">
@@ -38,7 +30,13 @@
                       <form>
                         <div class="row mb-2">
                           <div class="profile-title">
-                            <div class="d-flex gap-3">                       <img class="img-70 rounded-circle" alt="profile image" src="{{profile.image.url}}"/>
+                            <div class="d-flex gap-3">                      {% if profile.image %}
+                   <img class="img-70 rounded-circle" alt="profile image" src="{{profile.image.url}}"/>
+
+                   {% else %}
+
+                    <img class="img-70 rounded-circle" alt="profile image" src=""/>
+                   {% endif %}
                               <div class="flex-grow-1">
                                 <h3 class="mb-1">{{profile.user.username | title}} </h3>
                                 <p>{{profile.user.position | title }}</p>
@@ -72,8 +70,11 @@
                               <!-- User fields -->
                               <div class="col-sm-6 col-md-6">
                                   <div class="mb-3">
-                                      <label class="form-label">FullName</label>
-                                      <input class="form-control" type="text" value="{{ profile.user.username }}" readonly />
+                                      <label class="form-label">Full Name</label>
+                                      {{ form.full_name }}
+                                      {% if form.full_name.errors %}
+                                          <div class="text-danger">{{ form.full_name.errors }}</div>
+                                      {% endif %}
                                   </div>
                               </div>
       
@@ -91,15 +92,14 @@
                                       <input class="form-control" type="text" value="{{ profile.mat_no}}" readonly />
                                   </div>
                               </div>
-      
+
                               <div class="col-sm-6 col-md-6">
                                   <div class="mb-3">
                                       <label class="form-label">Level</label>
                                       <input class="form-control" type="text" value="{{ profile.level}}" readonly />
-
                                   </div>
                               </div>
-      
+
                               <div class="col-md-6">
                                   <div class="mb-3">
                                       <label class="form-label">Department</label>

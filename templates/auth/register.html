@@ -1,4 +1,3 @@
-
 {% extends 'auth/base.html' %}
 
 {% load static  %}
@@ -6,51 +5,201 @@
 {% block content %}
 
   <body>
-
     <div class="container-fluid p-0">
       <div class="row m-0">
         <div class="col-12 p-0">    
           <div class="login-card login-dark">
             <div>
               <div class="login-main"> 
-                <form class="theme-form">
-                  <h2 class="text-center">Create your account</h2>
+                <form class="theme-form" method="post" action="" id="registerForm">
+                  {% csrf_token %}
+                  <h2 class="text-center">Clearance Application</h2>
                   <p class="text-center">Enter your personal details to create account</p>
-                  <div class="form-group">
-                    <label class="col-form-label pt-0">Your Name</label>
-                    <div class="row g-2">
-                      <div class="col-6">
-                        <input class="form-control" type="text" required="" placeholder="First name">
+
+          
+
+                  <div id="step-1" class="register-step">
+                    <div class="form-group">
+                      <label class="col-form-label pt-0">Full Name <span class="text-danger">*</span></label>
+                      <div class="row g-2">
+                        <div class="col-12">
+                          <input class="form-control" type="text" name="fullname" required
+                                 placeholder="Enter your full name"
+                                 value="{{ form_data.fullname|default:'' }}">
+                        </div>
                       </div>
-                      <div class="col-6">
-                        <input class="form-control" type="text" required="" placeholder="Last name">
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label">Matric Number <span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" name="mat_no" required
+                             placeholder="e.g., 20/1234/CS"
+                             value="{{ form_data.mat_no|default:'' }}">
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label">Email Address <span class="text-danger">*</span></label>
+                      <input class="form-control" type="email" name="email" required
+                             placeholder="your.email@example.com"
+                             value="{{ form_data.email|default:'' }}">
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label">Password <span class="text-danger">*</span></label>
+                      <div class="form-input position-relative">
+                        <input class="form-control" type="password" name="password" required
+                               placeholder="Minimum 6 characters" minlength="6">
+                        <div class="show-hide"><span class="show"></span></div>
                       </div>
+                      <small class="text-muted">Password must be at least 6 characters long</small>
+                    </div>
+                    <div class="form-group mb-0 checkbox-checked text-end">
+                      <button type="button" class="btn btn-primary mt-3" id="nextBtn" onclick="validateStep1()">
+                        Next <i class="fas fa-arrow-right ms-1"></i>
+                      </button>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="col-form-label">Email Address</label>
-                    <input class="form-control" type="email" required="" placeholder="Test@gmail.com">
-                  </div>
-                  <div class="form-group">
-                    <label class="col-form-label">Password</label>
-                    <div class="form-input position-relative">
-                      <input class="form-control" type="password" name="login[password]" required="" placeholder="*********">
-                      <div class="show-hide"><span class="show"></span></div>
+                  <div id="step-2" class="register-step" style="display:none;">
+                    <div class="form-group">
+                      <label class="col-form-label">Department <span class="text-danger">*</span></label>
+                      <select class="form-control" name="department" required>
+                        <option value="" disabled {% if not form_data.department_id %}selected{% endif %}>Select Your Department</option>
+                        {% for dept in departments %}
+                          <option value="{{ dept.id }}" {% if form_data.department_id == dept.id|stringformat:"s" %}selected{% endif %}>
+                            {{ dept.title }}
+                          </option>
+                        {% endfor %}
+                      </select>
                     </div>
-                  </div>
-                  <div class="form-group mb-0 checkbox-checked">
-                    <div class="form-check checkbox-solid-info">
-                      <input class="form-check-input" id="solid6" type="checkbox">
-                      <label class="form-check-label" for="solid6">Agree with</label><a class="ms-3 link" href="forget-password.html">Privacy Policy</a>
+                    <div class="form-group">
+                      <label class="col-form-label">Level <span class="text-danger">*</span></label>
+                      <select class="form-control" name="level" required>
+                        <option value="" disabled {% if not form_data.level_title %}selected{% endif %}>Select Your Level</option>
+                        {% for level in levels %}
+                          <option value="{{ level }}" {% if form_data.level_title == level %}selected{% endif %}>
+                            {{ level }}
+                          </option>
+                        {% endfor %}
+                      </select>
                     </div>
-                    <button class="btn btn-primary btn-block w-100 mt-3" type="submit">Create Account</button>
+                    <div class="form-group mb-0 checkbox-checked d-flex justify-content-between">
+                      <button type="button" class="btn btn-secondary mt-3" id="backBtn">
+                        <i class="fas fa-arrow-left me-1"></i> Back
+                      </button>
+                      <button class="btn btn-success mt-3" type="submit" id="submitBtn">
+                        <i class="fas fa-user-plus me-1"></i> Create Account
+                      </button>
+                    </div>
+                    <p class="mt-4 mb-0 text-center">Already have an account?<a class="ms-2" href="{% url 'login' %}">Sign in</a></p>
                   </div>
-         
-                  <p class="mt-4 mb-0 text-center">Already have an account?<a class="ms-2" href="login.html">Sign in</a></p>
                 </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {% endblock %}
+      <script>
+        // Step navigation functions
+        function showStep2() {
+          document.getElementById('step-1').style.display = 'none';
+          document.getElementById('step-2').style.display = 'block';
+        }
+
+        function showStep1() {
+          document.getElementById('step-2').style.display = 'none';
+          document.getElementById('step-1').style.display = 'block';
+        }
+
+        // Validate step 1 before proceeding
+        function validateStep1() {
+          const fullname = document.querySelector('input[name="fullname"]').value.trim();
+          const matNo = document.querySelector('input[name="mat_no"]').value.trim();
+          const email = document.querySelector('input[name="email"]').value.trim();
+          const password = document.querySelector('input[name="password"]').value;
+
+          let isValid = true;
+          let errorMessage = '';
+
+          if (!fullname) {
+            errorMessage += 'Full name is required.\n';
+            isValid = false;
+          }
+
+          if (!matNo) {
+            errorMessage += 'Matric number is required.\n';
+            isValid = false;
+          }
+
+          if (!email) {
+            errorMessage += 'Email address is required.\n';
+            isValid = false;
+          } else {
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+              errorMessage += 'Please enter a valid email address.\n';
+              isValid = false;
+            }
+          }
+
+          if (!password) {
+            errorMessage += 'Password is required.\n';
+            isValid = false;
+          } else if (password.length < 6) {
+            errorMessage += 'Password must be at least 6 characters long.\n';
+            isValid = false;
+          }
+
+          if (isValid) {
+            showStep2();
+          } else {
+            alert(errorMessage);
+          }
+        }
+
+        // Event listeners
+        document.getElementById('nextBtn').onclick = validateStep1;
+        document.getElementById('backBtn').onclick = showStep1;
+
+        // Form submission validation
+        document.getElementById('registerForm').onsubmit = function(e) {
+          const department = document.querySelector('select[name="department"]').value;
+          const level = document.querySelector('select[name="level"]').value;
+
+          if (!department) {
+            alert('Please select your department.');
+            e.preventDefault();
+            return false;
+          }
+
+          if (!level) {
+            alert('Please select your level.');
+            e.preventDefault();
+            return false;
+          }
+
+          // Show loading state
+          const submitBtn = document.getElementById('submitBtn');
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Creating Account...';
+          submitBtn.disabled = true;
+
+          return true;
+        };
+
+        // Show step 2 if there are form errors (user came back from server validation)
+        {% if form_data %}
+          showStep2();
+        {% endif %}
+
+        // Password show/hide functionality
+        document.querySelector('.show-hide').onclick = function() {
+          const passwordInput = document.querySelector('input[name="password"]');
+          const showSpan = this.querySelector('.show');
+
+          if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            showSpan.classList.add('hide');
+          } else {
+            passwordInput.type = 'password';
+            showSpan.classList.remove('hide');
+          }
+        };
+      </script>
+    {% endblock %}

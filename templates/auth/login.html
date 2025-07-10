@@ -34,10 +34,13 @@
 
                   {% csrf_token %}
                   <h2 class="text-center">Sign in to account</h2>
-                  <p class="text-center">Enter your email &amp; password to login</p>
+                  <p class="text-center">Enter your email or matric number &amp; password to login</p>
+
+          
+
                   <div class="form-group">
-                    <label class="col-form-label">Email Address</label>
-                    <input class="form-control" type="email" required="" name = "email" placeholder="Test@gmail.com">
+                    <label class="col-form-label">Email or Matric Number</label>
+                    <input class="form-control" type="text" required="" name="email" placeholder="your.email@example.com or 20/1234/CS">
                   </div>
                   <div class="form-group">
                     <label class="col-form-label">Password</label>
@@ -61,7 +64,7 @@
                   </div>
           
          
-                  <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2" href="sign-up.html">Create Account</a></p>
+                  <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2" href="{% url 'register' %}">Create Account</a></p>
                 </form>
               </div>
             </div>
