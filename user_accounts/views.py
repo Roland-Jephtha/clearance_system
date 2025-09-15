@@ -312,7 +312,7 @@ def dashboard(request):
             })
 
             # Exam & Records
-            clearance_data['exam_record']['documents'].append({
+            clearance_data['exams_records']['documents'].append({
                 'title': doc.title,
                 'approved': doc.Exam_and_record_approved,
                 'approved_by': doc.Exam_and_record_approved_by.username if doc.Exam_and_record_approved_by else None
@@ -972,6 +972,8 @@ def disapprove_doc(request, doc_id, field):
 
 
 
+
+
 @login_required(login_url='login')
 def profile(request):
     user = request.user
@@ -984,7 +986,7 @@ def profile(request):
         'library': Library,
         'hostel': Hostel,
         'student_affair': Student_affair,
-        'exam_and_record': Exam_and_record,
+        'exams_records': Exam_and_record,
     }.get(position)
 
     form_class = {
@@ -994,8 +996,9 @@ def profile(request):
         'library': LibraryForm,
         'hostel': HostelForm,
         'student_affair': StudentAffairForm,
-        'exam_and_record': ExamAndRecordForm,
+        'exams_records': ExamAndRecordForm,
     }.get(position)
+
 
     if not profile_model or not form_class:
         return render(request, 'dashboard/profile.html', {'error': 'Unsupported role'})

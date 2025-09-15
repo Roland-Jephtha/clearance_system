@@ -31,7 +31,7 @@ class StudentProfileForm(forms.ModelForm):
     """Separate form for profile updates - only editable fields"""
     class Meta:
         model = Student
-        fields = ['image', 'signature']
+        fields = ['image']
 
         widgets = {
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
@@ -137,27 +137,27 @@ class HodForm(ProfileBaseForm):
 
     class Meta:
         model = Hod
-        fields = ['department', 'image', 'signature']
+        fields = ['department', 'image']
 
 class SugForm(ProfileBaseForm):
     class Meta:
         model = Sug
-        fields = ['image', 'signature']
+        fields = ['image']
 
 class SportDirectorForm(ProfileBaseForm):
     class Meta:
         model = Sport_director
-        fields = ['image', 'signature']
+        fields = ['image']
 
 class LibraryForm(ProfileBaseForm):
     class Meta:
         model = Library
-        fields = ['image', 'signature']
+        fields = ['image']
 
 class HostelForm(ProfileBaseForm):
     class Meta:
         model = Hostel
-        fields = ['image', 'signature']
+        fields = ['image']
 
 class StudentAffairForm(ProfileBaseForm):
     class Meta:
@@ -167,4 +167,4 @@ class StudentAffairForm(ProfileBaseForm):
 class ExamAndRecordForm(ProfileBaseForm):
     class Meta:
         model = Exam_and_record
-        fields = ['image', 'signature']
+        fields = ['image']

@@ -148,7 +148,7 @@
 
 
 
-                            {% elif user.position == "exams_and_records" %}
+                            {% elif user.position == "exams_records" %}
                             <th> <span class="f-light f-w-800">HOD</span></th>
                             <th> <span class="f-light f-w-800">SUG</span></th>
                             <th> <span class="f-light f-w-800">Hostel</span></th>
@@ -267,7 +267,7 @@
     </td>
 
     <!-- SUG Column - Show if user position is sug or higher -->
-    {% if user.position == "sug" or user.position == "hostel" or user.position == "library" or user.position == "sport_director" or user.position == "exams_and_records" or user.position == "student_affair" %}
+    {% if user.position == "sug" or user.position == "hostel" or user.position == "library" or user.position == "sport_director" or user.position == "exams_records" or user.position == "student_affair" %}
     <td>
         {% if user.position == "sug" %}
             <!-- Editable for SUG -->
@@ -307,7 +307,7 @@
     {% endif %}
 
     <!-- Hostel Column - Show if user position is hostel or higher -->
-    {% if user.position == "hostel" or user.position == "library" or user.position == "sport_director" or user.position == "exams_and_records" or user.position == "student_affair" %}
+    {% if user.position == "hostel" or user.position == "library" or user.position == "sport_director" or user.position == "exams_records" or user.position == "student_affair" %}
     <td>
         {% if user.position == "hostel" %}
             <!-- Editable for Hostel -->
@@ -347,7 +347,7 @@
     {% endif %}
 
     <!-- Library Column - Show if user position is library or higher -->
-    {% if user.position == "library" or user.position == "sport_director" or user.position == "exams_and_records" or user.position == "student_affair" %}
+    {% if user.position == "library" or user.position == "sport_director" or user.position == "exams_records" or user.position == "student_affair" %}
     <td>
         {% if user.position == "library" %}
             <!-- Editable for Library -->
@@ -387,7 +387,7 @@
     {% endif %}
 
     <!-- Sports Director Column - Show if user position is sport_director or higher -->
-    {% if user.position == "sport_director" or user.position == "exams_and_records" or user.position == "student_affair" %}
+    {% if user.position == "sport_director" or user.position == "exams_records" or user.position == "student_affair" %}
     <td>
         {% if user.position == "sport_director" %}
             <!-- Editable for Sports Director -->
@@ -426,10 +426,10 @@
     </td>
     {% endif %}
 
-    <!-- Exams and Records Column - Show if user position is exams_and_records or higher -->
-    {% if user.position == "exams_and_records" or user.position == "student_affair" %}
+    <!-- Exams and Records Column - Show if user position is exams_records or higher -->
+    {% if user.position == "exams_records" or user.position == "student_affair" %}
     <td>
-        {% if user.position == "exams_and_records" %}
+        {% if user.position == "exams_records" %}
             <!-- Editable for Exams and Records - Note: field name is Exam_and_record_approved -->
             {% if doc.Exam_and_record_approved %}
                 <div class="d-flex flex-column align-items-center">
