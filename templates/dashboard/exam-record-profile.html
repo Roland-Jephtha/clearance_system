@@ -1,5 +1,3 @@
-
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -45,19 +43,15 @@
                           </div>
                         </div>
 
-              
-                 
+
+
+
                       </form>
                     </div>
                   </div>
                 </div>
                 <div class="col-xl-8">
                   <form method="POST" enctype="multipart/form-data" class="card">
-
-
-
-
-
 
 
 
@@ -70,97 +64,47 @@
                               <!-- User fields -->
                               <div class="col-sm-6 col-md-6">
                                   <div class="mb-3">
-                                      <label class="form-label">Full Name</label> <br>
-                                    <strong>  {{profile.user.username|title}} </strong>
-                                      {% if form.full_name.errors %}
-                                          <div class="text-danger">{{ form.full_name.errors }}</div>
-                                      {% endif %}
+                                      <label class="form-label">Full Name</label>
+                                      {{ form.first_name }}
+                                      {{ form.last_name }}
                                   </div>
                               </div>
-      
+
                               <div class="col-sm-6 col-md-6">
                                   <div class="mb-3">
                                       <label class="form-label">Email address</label>
                                       <input class="form-control" type="email" value="{{ profile.user.email }}" readonly />
                                   </div>
                               </div>
-      
-                              <!-- Student model fields -->
-                              <div class="col-sm-6 col-md-6">
-                                  <div class="mb-3">
-                                      <label class="form-label">Matric Number</label>
-                                      <input class="form-control" type="text" value="{{ profile.mat_no}}" readonly />
-                                  </div>
-                              </div>
 
-                              <div class="col-sm-6 col-md-6">
-                                  <div class="mb-3">
-                                      <label class="form-label">Level</label>
-                                      <input class="form-control" type="text" value="{{ profile.level}}" readonly />
-                                  </div>
-                              </div>
-
-                              <div class="col-md-6">
-                                  <div class="mb-3">
-                                      <label class="form-label">Department</label>
-                                      <input class="form-control" type="text" value="{{ profile.department }}" readonly />
-                                  </div>
-                              </div>
-      
                               <div class="col-md-6">
                                   <div class="mb-3">
                                       <label class="form-label">Profile Image</label>
                                       {{ form.image }}
                                   </div>
                               </div>
-                              {% comment %} <div class="col-md-6">
+
+                              <div class="col-md-6">
                                   <div class="mb-3">
                                       <label class="form-label">Signature</label>
                                       {{ form.signature }}
                                   </div>
                               </div>
-       {% endcomment %}
-                     
-      
-                          
-                          </div>
+
+
+
+
                       </div>
-                      <div class="card-footer text-end">
-                          <button class="btn btn-primary" type="submit">Update Profile</button>
-                      </div>
-                  </form>
-              </div>
-              </div>
-            </div>
+                  </div>
+                  <div class="card-footer text-end">
+                      <button class="btn btn-primary" type="submit">Update Profile</button>
+                  </div>
+              </form>
+          </div>
           </div>
         </div>
-       
       </div>
-   
-
-
-
-
-
-
-
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </div>
+  </div>
+</div>
 {% endblock %}
-
-

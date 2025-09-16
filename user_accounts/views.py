@@ -33,7 +33,7 @@ from PIL import Image
 from io import BytesIO
 import os
 from django.core.files import File
-from django.utils import timezone   
+from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -47,7 +47,7 @@ from django.urls import reverse
 
 from .models import Hod, Sug, Sport_director, Library, Hostel, Student_affair, Exam_and_record
 from .forms import (
-    HodForm, SugForm, SportDirectorForm, LibraryForm, 
+    HodForm, SugForm, SportDirectorForm, LibraryForm,
     HostelForm, StudentAffairForm, ExamAndRecordForm
 )
 
@@ -63,7 +63,7 @@ def remove_signature_from_document(doc):
     try:
         # Assuming the signed document has 'signed_' prefix
         original_file_path = doc.file.path.replace("signed_", "")
-        
+
         # Check if the original document exists
         if os.path.exists(original_file_path):
             with open(original_file_path, "rb") as f:
@@ -312,7 +312,7 @@ def dashboard(request):
             })
 
             # Exam & Records
-            clearance_data['exams_records']['documents'].append({
+            clearance_data['exam_record']['documents'].append({
                 'title': doc.title,
                 'approved': doc.Exam_and_record_approved,
                 'approved_by': doc.Exam_and_record_approved_by.username if doc.Exam_and_record_approved_by else None
@@ -397,52 +397,52 @@ def dashboard(request):
             "overall_status": overall_status,
             "documents": documents
         })
-    
 
-    
+
+
     elif request.user.position == "hod":
         profile = Hod.objects.get(user = request.user)
-      
+
         return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
-    
+
 
     elif request.user.position == "sport_director":
         profile = Sport_director.objects.get(user = request.user)
-      
+
         return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
-    
+
 
     elif request.user.position == "exams_records":
         profile = Exam_and_record.objects.get(user = request.user)
-      
+
         return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
-    
+
 
     elif request.user.position == "hostel":
         profile = Hostel.objects.get(user = request.user)
-      
+
         return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
-    
+
 
     elif request.user.position == "library":
         profile = Library.objects.get(user = request.user)
-      
+
         return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
-    
+
 
     elif request.user.position == "student_affair":
         profile = Student_affair.objects.get(user = request.user)
-      
+
         return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
-    
+
 
     elif request.user.position == "sug":
         profile = Sug.objects.get(user = request.user)
-      
+
         return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
-    
-        
-        
+
+
+
     return render(request, 'dashboard/dashboard.html', context = {"profile" : profile})
 
 
@@ -973,7 +973,6 @@ def disapprove_doc(request, doc_id, field):
 
 
 
-
 @login_required(login_url='login')
 def profile(request):
     user = request.user
@@ -1019,6 +1018,9 @@ def profile(request):
         'form': form,
         'profile': profile_instance,
     })
+
+
+
 
 
 
@@ -1082,10 +1084,10 @@ def login(request):
                     return redirect('login')
     else:
         return redirect("dashboard")
-    
 
-    
-   
+
+
+
     return render(request, 'auth/login.html')
 
 
@@ -1212,7 +1214,7 @@ def create_statement_of_result(request, student_id):
                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [student_user.email], fail_silently=True)
         else:
             messages.error(request, "Please correct the errors in the form.")
-        
+
         return redirect('student_doc')
 
     return redirect('student_doc')
