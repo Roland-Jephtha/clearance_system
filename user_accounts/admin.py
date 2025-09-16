@@ -24,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
 
     # Optional: customize which fields are displayed in the admin form
     fieldsets = (
-        (None, {'fields': ('username', 'email', 'password', 'position')}),
+        (None, {'fields': ('username', 'email','first_name', 'last_name',  'password', 'position')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
